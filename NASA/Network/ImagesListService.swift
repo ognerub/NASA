@@ -20,31 +20,46 @@ final class ImagesListService {
         self.builder = builder
     }    
     
-    func fetchPhotos(completion: @escaping (Result<Photo, Error>) -> Void) {
+    func fetchPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
         if currentTask != nil { return } else { currentTask?.cancel() }
         guard let request = urlRequestToken() else {
             print("Invalide request in fetchPhoto")
             completion(.failure(NetworkError.urlSessionError))
             return
         }
-        currentTask = urlSession.objectTask(for: request) { [weak self] (result: Result<Photo,Error>) in
+        currentTask = urlSession.objectTask(for: request) { [weak self] (result: Result<NASAData,Error>) in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.currentTask = nil
                 switch result {
                 case .success(let result):
                     var photos: [Photo] = []
-                    let photo = Photo(
-                        title: result.title,
-                        url: result.url)
-                    photos.append(photo)
+                    let madiaItems = result.collection.items
+                    for mediaItem in madiaItems {
+                        var photo = Photo(title: "", url: "")
+                        let mediaItem = MediaItem(
+                            data: mediaItem.data,
+                            links: mediaItem.links
+                        )
+                        for mediaData in mediaItem.data {
+                            let title = mediaData.title
+                            photo.title = title
+                        }
+                        if let links = mediaItem.links {
+                            for mediaLink in links {
+                                let link = mediaLink.href
+                                photo.url = link
+                            }
+                        }
+                        photos.append(photo)
+                    }
                     self.photos.append(contentsOf: photos)
                     NotificationCenter.default.post(
                         name: ImagesListService.DidChangeNotification,
                         object: self,
                         userInfo: ["Photos": photos]
                     )
-                    completion(.success(photo))
+                    completion(.success(photos))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -56,7 +71,7 @@ final class ImagesListService {
 
 private extension ImagesListService {
     func urlRequestToken() -> URLRequest? {
-        let path: String = "/planetary/apod?"
+        let path: String = "/search?"
         return builder.makeHTTPRequest(
             path: path,
             httpMethod: "GET",

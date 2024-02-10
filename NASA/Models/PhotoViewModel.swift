@@ -1,23 +1,36 @@
 import Foundation
 
 struct Photo: Codable {
-//    let copyright: String
-//    let date: String
-//    let explanation: String
-//    let hdurl: String
 //    let mediaType: String
 //    let serviceVersion: String
-    let title: String
-    let url: String
+    var title: String
+    var url: String
 
     enum CodingKeys: String, CodingKey {
-//        case copyright
-//        case date
-//        case explanation
-//        case hdurl
 //        case mediaType = "media_type"
 //        case serviceVersion = "service_version"
         case title
         case url
     }
+}
+
+struct NASAData: Codable {
+    let collection: Collection
+}
+
+struct Collection: Codable {
+    let items: [MediaItem]
+}
+
+struct MediaItem: Codable {
+    let data: [MediaData]
+    let links: [MediaLink]?
+}
+
+struct MediaData: Codable {
+    let title: String
+}
+
+struct MediaLink: Codable {
+    let href: String
 }

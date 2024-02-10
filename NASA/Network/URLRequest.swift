@@ -23,20 +23,29 @@ final class URLRequestBuilder {
             request.httpMethod = httpMethod
             request.timeoutInterval = 15
             
-            if let token = storage.token {
-                
-                var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-                components?.queryItems = [
-                    URLQueryItem(name: "api_key", value: "\(token)")
-                ]
-                
-                guard let comurl = components?.url else {
-                    print("error to create url")
-                    return nil
-                }
-                
-                request.url = comurl
+//            if let token = storage.token {
+//                var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
+//                components?.queryItems = [
+//                    URLQueryItem(name: "api_key", value: "\(token)")
+//                ]
+//                guard let comurl = components?.url else {
+//                    print("error to create url")
+//                    return nil
+//                }
+//                request.url = comurl
+//            }
+            
+            let search = "apollo"
+            var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
+            components?.queryItems = [
+                URLQueryItem(name: "q", value: "\(search)")
+            ]
+            guard let comurl = components?.url else {
+                print("error to create url")
+                return nil
             }
+            request.url = comurl
+            
             return request
         }
 }

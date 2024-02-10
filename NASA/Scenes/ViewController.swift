@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 class ViewController: UIViewController {
     
@@ -48,7 +49,7 @@ class ViewController: UIViewController {
         view.addSubview(button)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.cellReuseIdentifier)
         
         imagesListServiceObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.DidChangeNotification,
@@ -93,7 +94,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
+        150
     }
 }
 
@@ -103,9 +104,23 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = nasaArray[indexPath.row].title
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.cellReuseIdentifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
+        downloadImageFor(cell: cell, with: indexPath)
+        cell.configureCell(
+            textLabel: nasaArray[indexPath.row].title
+        )
         return cell
+    }
+    
+    private func downloadImageFor(cell: SearchTableViewCell, with indexPath: IndexPath) {
+        cell.cellImageView.kf.setImage(with: URL(string: nasaArray[indexPath.row].url)) { result in
+            switch result {
+            case .success(_):
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            case .failure(_):
+                print("failde to load image!")
+            }
+        }
     }
 }
 
