@@ -94,7 +94,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        150
+        return 200
     }
 }
 
@@ -116,7 +116,8 @@ extension ViewController: UITableViewDataSource {
     }
     
     private func downloadImageFor(cell: SearchTableViewCell, at indexPath: IndexPath) {
-        cell.cellImageView.kf.setImage(with: URL(string: self.nasaArray[indexPath.row].url), placeholder: UIImage(systemName: "sun"), options: [.scaleFactor(0.5)]) { result in
+        guard let url = self.nasaArray[indexPath.row].url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
+        cell.cellImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(systemName: "sun"), options: [.scaleFactor(0.5)]) { result in
             switch result {
             case .success(_):
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)

@@ -35,7 +35,7 @@ final class URLRequestBuilder {
 //                request.url = comurl
 //            }
             
-            let search = "apollo"
+            let search = "earth"
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
             components?.queryItems = [
                 URLQueryItem(name: "q", value: "\(search)")
