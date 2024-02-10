@@ -104,21 +104,24 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.cellReuseIdentifier, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
-        downloadImageFor(cell: cell, with: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.cellReuseIdentifier, for: indexPath) as? SearchTableViewCell else {
+            print("return default cell")
+            return UITableViewCell()
+        }
         cell.configureCell(
             textLabel: nasaArray[indexPath.row].title
         )
+        downloadImageFor(cell: cell, at: indexPath)
         return cell
     }
     
-    private func downloadImageFor(cell: SearchTableViewCell, with indexPath: IndexPath) {
-        cell.cellImageView.kf.setImage(with: URL(string: nasaArray[indexPath.row].url)) { result in
+    private func downloadImageFor(cell: SearchTableViewCell, at indexPath: IndexPath) {
+        cell.cellImageView.kf.setImage(with: URL(string: self.nasaArray[indexPath.row].url), placeholder: UIImage(systemName: "sun"), options: [.scaleFactor(0.5)]) { result in
             switch result {
             case .success(_):
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(_):
-                print("failde to load image!")
+                print("failed to load image!")
             }
         }
     }

@@ -37,7 +37,9 @@ final class SearchTableViewCell: UITableViewCell {
         cellImageView.kf.cancelDownloadTask()
     }
     
-    func configureCell(textLabel: String) {
+    func configureCell(
+        textLabel: String
+    ) {
         cellLabel.text = textLabel
     }
     

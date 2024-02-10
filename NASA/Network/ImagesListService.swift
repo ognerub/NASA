@@ -48,10 +48,14 @@ final class ImagesListService {
                         if let links = mediaItem.links {
                             for mediaLink in links {
                                 let link = mediaLink.href
-                                photo.url = link
+                                if link.hasSuffix("jpg") {
+                                    photo.url = link
+                                }
                             }
                         }
-                        photos.append(photo)
+                        if photo.url != "" {
+                            photos.append(photo)
+                        }
                     }
                     self.photos.append(contentsOf: photos)
                     NotificationCenter.default.post(
