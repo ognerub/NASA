@@ -11,24 +11,17 @@ class ViewController: UIViewController {
     
     private lazy var nasaArray: [Photo] = []
     
-    private lazy var navigationBar: UINavigationBar = {
-        let navBar = UINavigationBar()
-        navBar.backgroundColor = .clear
-        navBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 120)
-        return navBar
-    }()
-    
-    private lazy var searchController: UISearchController = {
-        let search = UISearchController()
-        search.searchBar.backgroundColor = .red
-        search.searchBar.frame = CGRect(x: 0, y: 60, width: view.frame.width, height: 60)
+    private lazy var searchBar: UISearchBar = {
+        let search = UISearchBar()
+        search.placeholder = "Search"
+        search.frame = CGRect(x: 0, y: 50, width: view.frame.width, height: 50)
         return search
     }()
     
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.allowsSelection = false
-        table.frame = CGRect(x: 0, y: 80, width: view.frame.width, height: view.frame.height)
+        table.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: view.frame.height)
         table.backgroundColor = .clear
         return table
     }()
@@ -60,11 +53,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        view.addSubview(navigationBar)
-        view.addSubview(searchController.searchBar)
-        searchController.searchBar.placeholder = "Search"
-        searchController.obscuresBackgroundDuringPresentation = false
-        navigationItem.searchController = searchController
+        view.addSubview(searchBar)
+        searchBar.delegate = self
         view.addSubview(tableView)
         view.addSubview(button)
         tableView.delegate = self
@@ -109,6 +99,19 @@ class ViewController: UIViewController {
                 secondCompletion: {})
             self.alertPresenter?.show(with: model)
         }
+    }
+}
+
+extension ViewController: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(true, animated: true)
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
     }
 }
 
