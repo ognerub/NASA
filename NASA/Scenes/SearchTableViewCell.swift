@@ -8,24 +8,32 @@ final class SearchTableViewCell: UITableViewCell {
     
     private lazy var cellLabel: UILabel = {
         let label = UILabel()
-        label.text = "String"
-        label.textColor = .black
+        label.textColor = .white
+        label.backgroundColor = .clear
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var cellImageView: UIImageView = {
-        let image = UIImage(systemName: "moon")
+        let image = UIImage()
         let view = UIImageView(image: image)
-        view.contentMode = .scaleAspectFit
+        view.backgroundColor = .clear
+        view.contentMode = .scaleToFill
+        view.layer.cornerRadius = 15
+        view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
         configureConstraints()
-        backgroundColor = .yellow
     }
     
     required init?(coder: NSCoder) {
@@ -46,19 +54,18 @@ final class SearchTableViewCell: UITableViewCell {
     // MARK: - Configure constraints
     
     private func configureConstraints() {
-        addSubview(cellLabel)
-        NSLayoutConstraint.activate([
-            cellLabel.topAnchor.constraint(equalTo: topAnchor),
-            cellLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-            cellLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            cellLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
-        ])
         addSubview(cellImageView)
         NSLayoutConstraint.activate([
-            cellImageView.topAnchor.constraint(equalTo: topAnchor),
-            cellImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            cellImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            cellImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            cellImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            cellImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            cellImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            cellImageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 190)
+        ])
+        addSubview(cellLabel)
+        NSLayoutConstraint.activate([
+            cellLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            cellLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            cellLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
     }
 }

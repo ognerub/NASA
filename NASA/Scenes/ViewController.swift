@@ -11,10 +11,25 @@ class ViewController: UIViewController {
     
     private lazy var nasaArray: [Photo] = []
     
+    private lazy var navigationBar: UINavigationBar = {
+        let navBar = UINavigationBar()
+        navBar.backgroundColor = .clear
+        navBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 120)
+        return navBar
+    }()
+    
+    private lazy var searchController: UISearchController = {
+        let search = UISearchController()
+        search.searchBar.backgroundColor = .red
+        search.searchBar.frame = CGRect(x: 0, y: 60, width: view.frame.width, height: 60)
+        return search
+    }()
+    
     private lazy var tableView: UITableView = {
         let table = UITableView()
-        table.backgroundColor = UIColor.green
-        table.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        table.allowsSelection = false
+        table.frame = CGRect(x: 0, y: 80, width: view.frame.width, height: view.frame.height)
+        table.backgroundColor = .clear
         return table
     }()
     
@@ -44,7 +59,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .clear
+        view.addSubview(navigationBar)
+        view.addSubview(searchController.searchBar)
+        searchController.searchBar.placeholder = "Search"
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
         view.addSubview(tableView)
         view.addSubview(button)
         tableView.delegate = self
@@ -105,26 +125,42 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.cellReuseIdentifier, for: indexPath) as? SearchTableViewCell else {
-            print("return default cell")
             return UITableViewCell()
         }
         cell.configureCell(
             textLabel: nasaArray[indexPath.row].title
         )
         downloadImageFor(cell: cell, at: indexPath)
+        setupGradientFor(cell: cell)
         return cell
     }
     
     private func downloadImageFor(cell: SearchTableViewCell, at indexPath: IndexPath) {
-        guard let url = self.nasaArray[indexPath.row].url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
-        cell.cellImageView.kf.setImage(with: URL(string: url), placeholder: UIImage(systemName: "sun"), options: [.scaleFactor(0.5)]) { result in
-            switch result {
-            case .success(_):
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            case .failure(_):
-                print("failed to load image!")
-            }
-        }
+        guard let url = self.nasaArray[indexPath.row].url.addingPercentEncoding(
+            withAllowedCharacters: .urlQueryAllowed
+        )
+        else { return }
+        let processor = DownsamplingImageProcessor(size: CGSize(width: 190, height: 190))
+        cell.cellImageView.kf.indicatorType = .activity
+        cell.cellImageView.kf.setImage(
+            with: URL(string: url),
+            placeholder: UIImage(systemName: "sun"),
+            options: [
+                .processor(processor)
+            ]
+        ) { _ in }
+    }
+    
+    private func setupGradientFor(cell: SearchTableViewCell) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: 0, y: 140, width: view.frame.width-20, height: 50)
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor.black.cgColor]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        cell.cellImageView.layer.addSublayer(gradientLayer)
     }
 }
 
