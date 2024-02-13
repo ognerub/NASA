@@ -20,9 +20,10 @@ final class ImagesListService {
         self.builder = builder
     }    
     
-    func fetchPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetchPhotos(searchText: String?, completion: @escaping (Result<[Photo], Error>) -> Void) {
+        guard let searchText = searchText else { return }
         if currentTask != nil { return } else { currentTask?.cancel() }
-        guard let request = urlRequestToken() else {
+        guard let request = urlRequestToken(searchText: searchText) else {
             print("Invalide request in fetchPhoto")
             completion(.failure(NetworkError.urlSessionError))
             return
@@ -57,7 +58,7 @@ final class ImagesListService {
                             photos.append(photo)
                         }
                     }
-                    self.photos.append(contentsOf: photos)
+                    self.photos = photos
                     NotificationCenter.default.post(
                         name: ImagesListService.DidChangeNotification,
                         object: self,
@@ -74,11 +75,14 @@ final class ImagesListService {
 }
 
 private extension ImagesListService {
-    func urlRequestToken() -> URLRequest? {
+    func urlRequestToken(searchText: String?) -> URLRequest? {
+        guard let searchText = searchText else { return nil}
         let path: String = "/search?"
         return builder.makeHTTPRequest(
             path: path,
             httpMethod: "GET",
-            baseURLString: NetworkConfiguration.standart.baseURL)
+            baseURLString: NetworkConfiguration.standart.baseURL,
+            searchText: "\(searchText)"
+        )
     }
 }

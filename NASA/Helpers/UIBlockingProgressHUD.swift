@@ -23,6 +23,10 @@ final class UIBlockingProgressHUD {
             )
         )
         activity.startAnimating()
+        activity.color = .init { (trait) -> UIColor in
+            
+            return trait.userInterfaceStyle == .dark ? .white : .white
+        }
         customView.addSubview(activity)
     }
 

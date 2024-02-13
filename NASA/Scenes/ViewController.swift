@@ -11,32 +11,27 @@ class ViewController: UIViewController {
     
     private lazy var nasaArray: [Photo] = []
     
+    private lazy var navigationBar: UINavigationBar = {
+        let bar = UINavigationBar()
+        bar.backgroundColor = UIColor.grayColor
+        bar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
+        return bar
+    }()
+    
     private lazy var searchBar: UISearchBar = {
         let search = UISearchBar()
+        search.barStyle = .black
         search.placeholder = "Search"
-        search.frame = CGRect(x: 0, y: 50, width: view.frame.width, height: 50)
+        search.frame = CGRect(x: 10, y: 50, width: view.frame.width - 20, height: 50)
         return search
     }()
     
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.allowsSelection = false
-        table.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: view.frame.height)
         table.backgroundColor = .clear
+        table.translatesAutoresizingMaskIntoConstraints = false
         return table
-    }()
-    
-    private lazy var button: UIButton = {
-        let button = UIButton()
-        button.addTarget(
-            self,
-            action: #selector(buttonPressed),
-            for: .touchUpInside)
-        button.backgroundColor = .lightGray
-        button.setTitle("Load!", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.frame = CGRect(x: view.frame.width/2-100, y: view.frame.height/2-50, width: 200, height: 100)
-        return button
     }()
 
     override func loadView() {
@@ -53,13 +48,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        view.addSubview(searchBar)
+        view.addSubview(navigationBar)
+        navigationBar.addSubview(searchBar)
         searchBar.delegate = self
-        view.addSubview(tableView)
-        view.addSubview(button)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.cellReuseIdentifier)
+        configureTableView()
         
         imagesListServiceObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.DidChangeNotification,
@@ -72,17 +64,31 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc
-    private func buttonPressed() {
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.cellReuseIdentifier)
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    private func startFetchUsing(searchText: String?) {
+        guard let searchText = searchText else { return }
         UIBlockingProgressHUD.showCustom()
-        imagesListService.fetchPhotos { result in
+        imagesListService.fetchPhotos(searchText: searchText) { [weak self] result in
+            guard let self = self else { return }
             UIBlockingProgressHUD.dismissCustom()
             switch result {
             case .success:
                 return
             case .failure:
                 self.showNetWorkErrorForImagesListVC() {
-                    self.buttonPressed()
+                    self.startFetchUsing(searchText: searchText)
                 }
             }
         }
@@ -103,6 +109,16 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let seconds = 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
+            guard let self = self else { return }
+            if searchText == searchBar.text && searchBar.text != "" {
+                self.startFetchUsing(searchText: searchText)
+            }
+        }
+    }
+    
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
         return true
@@ -151,12 +167,21 @@ extension ViewController: UITableViewDataSource {
             options: [
                 .processor(processor)
             ]
-        ) { _ in }
+        ) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                cell.cellImageView.contentMode = .scaleAspectFill
+            case .failure(_):
+                cell.cellImageView.image = UIImage(systemName: "nosign") ?? UIImage()
+            }
+            
+        }
     }
     
     private func setupGradientFor(cell: SearchTableViewCell) {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = CGRect(x: 0, y: 140, width: view.frame.width-20, height: 50)
+        gradientLayer.frame = CGRect(x: 0, y: 165, width: view.frame.width-20, height: 25)
         gradientLayer.colors = [
             UIColor.clear.cgColor,
             UIColor.black.cgColor]

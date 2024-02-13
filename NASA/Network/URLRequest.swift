@@ -12,7 +12,7 @@ final class URLRequestBuilder {
     func makeHTTPRequest (
         path: String,
         httpMethod: String,
-        baseURLString: String) -> URLRequest? {
+        baseURLString: String, searchText: String?) -> URLRequest? {
             guard
                 baseURLString.isValidURL,
                 let url = URL(string: baseURLString),
@@ -34,8 +34,8 @@ final class URLRequestBuilder {
 //                }
 //                request.url = comurl
 //            }
-            
-            let search = "apollo"
+            guard let searchText = searchText else { return nil }
+            let search = "\(searchText)"
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
             components?.queryItems = [
                 URLQueryItem(name: "q", value: "\(search)")
