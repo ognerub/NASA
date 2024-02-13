@@ -1,19 +1,33 @@
 import UIKit
 
-final class UIBlockingProgressHUD {
-    private static var window: UIWindow? {
+protocol UIBlockingProgressHUDProtocol: AnyObject {
+    func showCustom()
+    func dismissCustom()
+}
+
+final class UIBlockingProgressHUD: UIBlockingProgressHUDProtocol {
+    
+    private weak var viewController: UIViewController?
+    
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
+    }
+    
+    private var window: UIWindow? {
         return UIApplication.shared.windows.first
     }
 
-    private static var customView: UIView?
+    private var customView: UIView?
 
-    static func showCustom() {
+    func showCustom() {
         window?.isUserInteractionEnabled = false
         self.customView = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
-        guard let customView = customView else { return }
+        guard let customView = customView,
+              let viewController = viewController
+        else { return }
         customView.backgroundColor = .clear
-        window?.addSubview(customView)
-        customView.center = window?.center ?? CGPoint.zero
+        viewController.view.addSubview(customView)
+        customView.center = viewController.view.center
         let activity = UIActivityIndicatorView(
             frame: CGRect(
                 x: 0,
@@ -24,13 +38,12 @@ final class UIBlockingProgressHUD {
         )
         activity.startAnimating()
         activity.color = .init { (trait) -> UIColor in
-            
-            return trait.userInterfaceStyle == .dark ? .white : .white
+            return trait.userInterfaceStyle == .dark ? .whiteColor : .whiteColor
         }
         customView.addSubview(activity)
     }
 
-    static func dismissCustom() {
+    func dismissCustom() {
         window?.isUserInteractionEnabled = true
         customView?.removeFromSuperview()
     }

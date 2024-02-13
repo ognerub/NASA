@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */; };
 		844BF4442B76145F00C7BCBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BF4432B76145F00C7BCBA /* AppDelegate.swift */; };
 		844BF4482B76145F00C7BCBA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BF4472B76145F00C7BCBA /* SearchViewController.swift */; };
 		844BF44D2B76146100C7BCBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844BF44C2B76146100C7BCBA /* Assets.xcassets */; };
@@ -29,9 +30,11 @@
 		84E4A4402B7B73F300BE90BB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E4A43F2B7B73F300BE90BB /* Colors.swift */; };
 		84F80C192B7B818400184309 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F80C182B7B818400184309 /* TabBarController.swift */; };
 		84F80C1B2B7B826A00184309 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F80C1A2B7B826A00184309 /* MainViewController.swift */; };
+		84F80C1D2B7BADE500184309 /* CodableModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F80C1C2B7BADE500184309 /* CodableModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		844BF4402B76145F00C7BCBA /* NASA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NASA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844BF4432B76145F00C7BCBA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		844BF4452B76145F00C7BCBA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +57,7 @@
 		84E4A43F2B7B73F300BE90BB /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		84F80C182B7B818400184309 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		84F80C1A2B7B826A00184309 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		84F80C1C2B7BADE500184309 /* CodableModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +111,6 @@
 			children = (
 				846AC7782B7521E200837F48 /* NetworkConstants.swift */,
 				846AC7852B763C2B00837F48 /* ImagesListService.swift */,
-				844BF4572B76158B00C7BCBA /* URLRequest.swift */,
 				844BF4592B76158B00C7BCBA /* URLSession.swift */,
 			);
 			path = Network;
@@ -116,6 +119,7 @@
 		846AC77B2B75227C00837F48 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				84F80C1C2B7BADE500184309 /* CodableModels.swift */,
 				846AC7872B763CB000837F48 /* PhotoViewModel.swift */,
 				844BF45B2B76158B00C7BCBA /* NetworkErrorModel.swift */,
 				846AC78F2B76435200837F48 /* AlertModel.swift */,
@@ -137,7 +141,9 @@
 				844BF44E2B76146100C7BCBA /* LaunchScreen.storyboard */,
 				84F80C182B7B818400184309 /* TabBarController.swift */,
 				84F80C1A2B7B826A00184309 /* MainViewController.swift */,
+				841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */,
 				844BF4472B76145F00C7BCBA /* SearchViewController.swift */,
+				844BF4572B76158B00C7BCBA /* URLRequest.swift */,
 				8491820A2B77E335009EFDD0 /* SearchTableViewCell.swift */,
 			);
 			path = Scenes;
@@ -254,6 +260,7 @@
 				844BF4442B76145F00C7BCBA /* AppDelegate.swift in Sources */,
 				844BF45A2B76158B00C7BCBA /* URLSession.swift in Sources */,
 				844BF45E2B76158B00C7BCBA /* TokenStorage.swift in Sources */,
+				841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */,
 				846AC7922B7643D500837F48 /* Alert.swift in Sources */,
 				846AC77D2B7522C600837F48 /* String+Extensions.swift in Sources */,
 				84E4A4402B7B73F300BE90BB /* Colors.swift in Sources */,
@@ -264,6 +271,7 @@
 				844BF4582B76158B00C7BCBA /* URLRequest.swift in Sources */,
 				844BF45C2B76158B00C7BCBA /* NetworkErrorModel.swift in Sources */,
 				846AC78E2B7642AB00837F48 /* UIBlockingProgressHUD.swift in Sources */,
+				84F80C1D2B7BADE500184309 /* CodableModels.swift in Sources */,
 				84F80C192B7B818400184309 /* TabBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

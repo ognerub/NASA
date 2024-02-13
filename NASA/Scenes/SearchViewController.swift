@@ -6,6 +6,7 @@ class SearchViewController: UIViewController {
     private let imagesListService = ImagesListService.shared
     private var imagesListServiceObserver: NSObjectProtocol?
     private var alertPresenter: AlertPresenterProtocol?
+    private var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
     
     private let storage = OAuth2TokenStorage.shared
     
@@ -37,6 +38,7 @@ class SearchViewController: UIViewController {
     override func loadView() {
         super.loadView()
         alertPresenter = AlertPresenterImpl(viewController: self)
+        uiBlockingProgressHUD = UIBlockingProgressHUD(viewController: self)
         if storage.token == nil {
             print("token is nil write")
             storage.token = NetworkConstants.standart.personalToken
@@ -47,7 +49,7 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = .blackColor
         view.addSubview(navigationBar)
         navigationBar.addSubview(searchBar)
         searchBar.delegate = self
@@ -85,10 +87,10 @@ class SearchViewController: UIViewController {
     
     private func startFetchUsing(searchText: String?) {
         guard let searchText = searchText else { return }
-        UIBlockingProgressHUD.showCustom()
-        imagesListService.fetchPhotos(searchText: searchText) { [weak self] result in
+        uiBlockingProgressHUD?.showCustom()
+        imagesListService.fetchPhotosUsing(searchText: searchText) { [weak self] result in
             guard let self = self else { return }
-            UIBlockingProgressHUD.dismissCustom()
+            self.uiBlockingProgressHUD?.dismissCustom()
             switch result {
             case .success:
                 return
@@ -169,12 +171,11 @@ extension SearchViewController: UITableViewDataSource {
         cell.cellImageView.kf.indicatorType = .activity
         cell.cellImageView.kf.setImage(
             with: URL(string: url),
-            placeholder: UIImage(systemName: "sun"),
+            placeholder: UIImage(),
             options: [
                 .processor(processor)
             ]
-        ) { [weak self] result in
-            guard let self = self else { return }
+        ) { result in
             switch result {
             case .success(_):
                 cell.cellImageView.contentMode = .scaleAspectFill

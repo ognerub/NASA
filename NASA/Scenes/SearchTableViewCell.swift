@@ -4,7 +4,7 @@ final class SearchTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let cellReuseIdentifier = "cell"
+    static let cellReuseIdentifier = "SearchTableViewCell"
     
     private lazy var cellLabel: UILabel = {
         let label = UILabel()

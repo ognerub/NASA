@@ -14,22 +14,30 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let mainViewController = MainViewController()
         mainViewController.tabBarItem = mainTabBarItem
         
         let searchViewController = SearchViewController()
         searchViewController.tabBarItem = searchTabBarItem
-
+        
         viewControllers = [
             mainViewController,
             searchViewController
         ]
         selectedIndex = 0
-
-        view.backgroundColor = UIColor.black
-        tabBar.backgroundColor = UIColor.black
+        
+        view.backgroundColor = UIColor.clear
+        tabBar.backgroundColor = UIColor.clear
         tabBar.tintColor = UIColor.white
         tabBar.unselectedItemTintColor = UIColor.gray
+        
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .black
+            self.tabBar.standardAppearance = appearance
+            self.tabBar.scrollEdgeAppearance = appearance
+        }
     }
 }
