@@ -7,8 +7,8 @@ final class OAuth2TokenStorage {
     private let keychainWrapper = KeychainWrapper.standard
     
     var token: String? {
-        get { keychainWrapper.string(forKey: NetworkConfiguration.standart.personalToken) }
+        get { keychainWrapper.string(forKey: NetworkConstants.standart.personalToken) }
         set { guard let newValue = newValue else { return }
-            keychainWrapper.set(newValue, forKey: NetworkConfiguration.standart.personalToken) }
+            keychainWrapper.set(newValue, forKey: NetworkConstants.standart.personalToken) }
     }
 }

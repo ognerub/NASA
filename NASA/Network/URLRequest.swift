@@ -34,6 +34,7 @@ final class URLRequestBuilder {
 //                }
 //                request.url = comurl
 //            }
+            
             guard let searchText = searchText else { return nil }
             let search = "\(searchText)"
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)

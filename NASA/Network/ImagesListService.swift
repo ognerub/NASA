@@ -81,7 +81,7 @@ private extension ImagesListService {
         return builder.makeHTTPRequest(
             path: path,
             httpMethod: "GET",
-            baseURLString: NetworkConfiguration.standart.baseURL,
+            baseURLString: NetworkConstants.standart.baseURL,
             searchText: "\(searchText)"
         )
     }

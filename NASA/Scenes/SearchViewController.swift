@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-class ViewController: UIViewController {
+class SearchViewController: UIViewController {
     
     private let imagesListService = ImagesListService.shared
     private var imagesListServiceObserver: NSObjectProtocol?
@@ -13,14 +13,14 @@ class ViewController: UIViewController {
     
     private lazy var navigationBar: UINavigationBar = {
         let bar = UINavigationBar()
-        bar.backgroundColor = UIColor.grayColor
+        bar.backgroundColor = UIColor.black
         bar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
         return bar
     }()
     
     private lazy var searchBar: UISearchBar = {
         let search = UISearchBar()
-        search.barStyle = .black
+        search.searchBarStyle = .minimal
         search.placeholder = "Search"
         search.frame = CGRect(x: 10, y: 50, width: view.frame.width - 20, height: 50)
         return search
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         alertPresenter = AlertPresenterImpl(viewController: self)
         if storage.token == nil {
             print("token is nil write")
-            storage.token = NetworkConfiguration.standart.personalToken
+            storage.token = NetworkConstants.standart.personalToken
         } else {
             print("token not nil")
         }
@@ -61,7 +61,13 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             self.nasaArray = self.imagesListService.photos
             self.tableView.reloadData()
+            self.scrollToFirstRow()
         }
+    }
+    
+    private func scrollToFirstRow() {
+        let indexPath = NSIndexPath(row: 0, section: 0)
+        self.tableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
     }
     
     private func configureTableView() {
@@ -108,7 +114,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let seconds = 1.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
@@ -131,13 +137,13 @@ extension ViewController: UISearchBarDelegate {
     }
 }
 
-extension ViewController: UITableViewDelegate {
+extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
 }
 
-extension ViewController: UITableViewDataSource {
+extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return nasaArray.count
     }
@@ -181,10 +187,10 @@ extension ViewController: UITableViewDataSource {
     
     private func setupGradientFor(cell: SearchTableViewCell) {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = CGRect(x: 0, y: 165, width: view.frame.width-20, height: 25)
+        gradientLayer.frame = CGRect(x: 0, y: 160, width: view.frame.width-20, height: 30)
         gradientLayer.colors = [
             UIColor.clear.cgColor,
-            UIColor.black.cgColor]
+            UIColor.black.withAlphaComponent(0.75).cgColor]
         gradientLayer.locations = [0.0, 1.0]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
