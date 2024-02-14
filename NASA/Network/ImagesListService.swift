@@ -2,7 +2,9 @@ import Foundation
 
 final class ImagesListService {
     
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceProviderDidChange")
+    static let SearchResultDidChangeNotification = Notification.Name(rawValue: "SearchResultDidChange")
+    
+    static let PhotoResultDidChangeNotification = Notification.Name(rawValue: "PhotoResultDidChange")
     
     static let shared = ImagesListService()
     
@@ -33,7 +35,12 @@ final class ImagesListService {
                 switch result {
                 case .success(let result):
                     let photos = result
-                    self.postNotification(about: photos)
+                    self.photos = photos
+                    NotificationCenter.default.post(
+                        name: ImagesListService.PhotoResultDidChangeNotification,
+                        object: self,
+                        userInfo: ["Photos": photos]
+                    )
                     completion(.success(photos))
                 case .failure(let error):
                     completion(.failure(error))
@@ -80,7 +87,12 @@ final class ImagesListService {
                             photos.append(photo)
                         }
                     }
-                    self.postNotification(about: photos)
+                    self.photos = photos
+                    NotificationCenter.default.post(
+                        name: ImagesListService.SearchResultDidChangeNotification,
+                        object: self,
+                        userInfo: ["Search": photos]
+                    )
                     completion(.success(photos))
                 case .failure(let error):
                     completion(.failure(error))
@@ -91,12 +103,7 @@ final class ImagesListService {
     }
     
     private func postNotification(about photos: [Photo]) {
-        self.photos = photos
-        NotificationCenter.default.post(
-            name: ImagesListService.DidChangeNotification,
-            object: self,
-            userInfo: ["Photos": photos]
-        )
+        
     }
 }
 

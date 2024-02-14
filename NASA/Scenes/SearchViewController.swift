@@ -56,7 +56,7 @@ class SearchViewController: UIViewController {
         configureTableView()
         
         imagesListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.DidChangeNotification,
+            forName: ImagesListService.SearchResultDidChangeNotification,
             object: nil,
             queue: .main
         ) { [weak self] notification in

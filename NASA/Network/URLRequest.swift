@@ -71,16 +71,23 @@ final class URLRequestBuilder {
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "YYYY-MM-dd"
-            let formattedDate = dateFormatter.string(from: date)
-            var previousDate: Date = Date()
-            if let substractedDate = Calendar.current.date(byAdding: .day, value: -20, to: date) {
-                previousDate = substractedDate
+            
+            let currentDate: Date = date
+            var endDate: Date = currentDate
+            if let substractedEndDate = Calendar.current.date(byAdding: .day, value: -1, to: date) {
+                endDate = substractedEndDate
             }
-            let previousFormattedDate = dateFormatter.string(from: previousDate)
+            let formattedEndDate = dateFormatter.string(from: endDate)
+            
+            var startDate: Date = Date()
+            if let substractedStartDate = Calendar.current.date(byAdding: .day, value: -21, to: date) {
+                startDate = substractedStartDate
+            }
+            let formattedStartDate = dateFormatter.string(from: startDate)
             components?.queryItems = [
                 URLQueryItem(name: "api_key", value: "\(token)"),
-                URLQueryItem(name: "start_date", value: "\(previousFormattedDate)"),
-                URLQueryItem(name: "end_date", value: "\(formattedDate)")
+                URLQueryItem(name: "start_date", value: "\(formattedStartDate)"),
+                URLQueryItem(name: "end_date", value: "\(formattedEndDate)")
             ]
             guard let comurl = components?.url else {
                 print("error to create url")

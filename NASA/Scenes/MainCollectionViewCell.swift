@@ -4,11 +4,16 @@ final class MainCollectionViewCell: UICollectionViewCell {
     
     static let cellReuseIdentifier = "MainCollectionViewCell"
     
-    private lazy var textLabel: UILabel = {
+    private lazy var cellLabel: UILabel = {
         let label = UILabel()
-        label.text = "0"
-        label.frame = CGRect(x: 0, y: 50, width: 100, height: 30)
-        label.textColor = .black
+        label.textColor = .white
+        label.backgroundColor = .clear
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -31,7 +36,6 @@ final class MainCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureConstraints()
-        contentView.addSubview(textLabel)
     }
     
     override func prepareForReuse() {
@@ -44,7 +48,7 @@ final class MainCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(text: String) {
-        self.textLabel.text = text
+        self.cellLabel.text = text
     }
     
     private func configureConstraints() {
@@ -61,6 +65,12 @@ final class MainCollectionViewCell: UICollectionViewCell {
             cellImageView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
             cellImageView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
             cellImageView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
+        ])
+        cellView.addSubview(cellLabel)
+        NSLayoutConstraint.activate([
+            cellLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10),
+            cellLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10),
+            cellLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -10)
         ])
     }
     

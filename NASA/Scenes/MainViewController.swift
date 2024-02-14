@@ -8,7 +8,52 @@ final class MainViewController: UIViewController {
     private var alertPresenter: AlertPresenterProtocol?
     private var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
     
-    private var array: [Photo] = []
+    private var array: [Photo] = [
+        Photo(
+          title : "MOCK - We Are Going",
+          url : "https://images-assets.nasa.gov/video/NHQ_2019_0514_WeAreGoing/NHQ_2019_0514_WeAreGoing~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - We Go Together",
+          url : "https://images-assets.nasa.gov/video/NHQ_2019_0528_We Go Together/NHQ_2019_0528_We Go Together~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - We Go as the Artemis Generation",
+          url : "https://images-assets.nasa.gov/video/NHQ_2019_0719_We Go as the Artemis Generation/NHQ_2019_0719_We Go as the Artemis Generation~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - Going with the Flow",
+          url : "https://images-assets.nasa.gov/image/PIA17850/PIA17850~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - Going with the Flow",
+          url : "https://images-assets.nasa.gov/image/PIA06576/PIA06576~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - What\'s Going on with the Hole in the Ozone Layer",
+          url : "https://images-assets.nasa.gov/video/What\'s Going on with the Hole in the Ozone Layer_ - Horizontal Video/What\'s Going on with the Hole in the Ozone Layer_ - Horizontal Video~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - Merry-Go-Round",
+          url : "https://images-assets.nasa.gov/image/PIA05594/PIA05594~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - Places to Go, Things to See",
+          url : "https://images-assets.nasa.gov/image/PIA11750/PIA11750~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - Way to Go Spirit!",
+          url : "https://images-assets.nasa.gov/image/PIA06686/PIA06686~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - Hey! Whered Everybody Go?",
+          url : "https://images-assets.nasa.gov/image/PIA17988/PIA17988~thumb.jpg",
+          explanation : nil),
+        Photo(
+          title : "MOCK - #AskNASA - Who Is Going With Us?",
+          url : "https://images-assets.nasa.gov/video/NHQ_0219_1014_AskNASA - Who Is Going With Us/NHQ_0219_1014_AskNASA - Who Is Going With Us~thumb.jpg",
+          explanation : nil)
+    ]
     
     private lazy var collectionView: UICollectionView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
@@ -26,10 +71,10 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .blackColor
         configureCollectionView()
-        startFetch()
+        //startFetch()
         
         imagesListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.DidChangeNotification,
+            forName: ImagesListService.PhotoResultDidChangeNotification,
             object: nil,
             queue: .main
         ) { [weak self] notification in
@@ -40,19 +85,26 @@ final class MainViewController: UIViewController {
         }
     }
     
-    private func scrollToFirstRow() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+}
+
+private extension MainViewController {
+    func scrollToFirstRow() {
         let indexPath = NSIndexPath(row: 0, section: 0)
         self.collectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
     }
     
-    private func configureCollectionView() {
+    func configureCollectionView() {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.cellReuseIdentifier)
     }
     
-    private func startFetch() {
+    func startFetch() {
         uiBlockingProgressHUD?.showCustom()
         imagesListService.fetchPhotos() { [weak self] result in
             guard let self = self else { return }
@@ -83,14 +135,34 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("selected \(indexPath)")
+        let viewController = SingleImageViewController()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let screenWidth: CGFloat = view.frame.width
         let insets: CGFloat = 10
-        let spacing: CGFloat = 5
-        let cellsInRow: CGFloat = 2
-        let cellWidth = (screenWidth - (insets * 2)) / cellsInRow - spacing
+        let cellWidthWithInsets: CGFloat = screenWidth - (insets * 2)
+        let cellHeight: CGFloat = 180
         
-        return CGSize(width: cellWidth, height: 150)
+        /// make first cell width equal to screen width and substract insets
+        if indexPath.row == 0 {
+            return CGSize(
+                width: cellWidthWithInsets,
+                height: cellHeight)
+        } else {
+            let spacing: CGFloat = 5
+            let cellsInRow: CGFloat = 2
+            let cellWidthComputed = cellWidthWithInsets / cellsInRow - spacing
+            
+            return CGSize(
+                width: cellWidthComputed,
+                height: cellHeight)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
