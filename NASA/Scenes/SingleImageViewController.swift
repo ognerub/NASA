@@ -2,6 +2,8 @@ import UIKit
 import Kingfisher
 final class SingleImageViewController: UIViewController {
     
+    private let array: [Int] = [1,2,3,4,5,6,7,8,9,10]
+    
     private lazy var titleBackgroundView: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor.clear.cgColor
@@ -22,9 +24,14 @@ final class SingleImageViewController: UIViewController {
     
     private lazy var singleImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .green
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
     }()
     
     init(imageURLString: String) {
@@ -38,8 +45,8 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
         configureConstraints()
+        configureTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,7 +54,21 @@ final class SingleImageViewController: UIViewController {
         downloadImageFor(imageView: singleImageView)
     }
     
-    private func downloadImageFor(imageView: UIImageView) {
+    @objc
+    private func backButtonTapped() {
+        let mainViewController = MainViewController()
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        navigationController?.view.layer.add(transition, forKey: kCATransition)
+        navigationController?.pushViewController(mainViewController, animated: true)
+    }
+}
+
+private extension SingleImageViewController {
+    func downloadImageFor(imageView: UIImageView) {
         guard let url = imageURLString.addingPercentEncoding(
             withAllowedCharacters: .urlQueryAllowed)
         else { return }
@@ -67,20 +88,19 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    @objc
-    private func backButtonTapped() {
-        let mainViewController = MainViewController()
-        let transition = CATransition()
-        transition.duration = 0.5
-        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromLeft
-        navigationController?.view.layer.add(transition, forKey: kCATransition)
-        navigationController?.pushViewController(mainViewController, animated: true)
+    func configureTableView() {
+        view.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
-}
-
-private extension SingleImageViewController {
+    
     func configureConstraints() {
         view.addSubview(singleImageView)
         NSLayoutConstraint.activate([
@@ -97,5 +117,26 @@ private extension SingleImageViewController {
             backButton.leadingAnchor.constraint(equalTo: titleBackgroundView.leadingAnchor),
             backButton.bottomAnchor.constraint(equalTo: titleBackgroundView.bottomAnchor)
         ])
+    }
+}
+
+extension SingleImageViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
+}
+
+extension SingleImageViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return array.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? UITableViewCell else { return UITableViewCell() }
+        cell.textLabel?.text = String(array[indexPath.row])
+        cell.textLabel?.textColor = .black
+        cell.backgroundColor = .white
+        return cell
     }
 }
