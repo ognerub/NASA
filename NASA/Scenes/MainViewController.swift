@@ -137,8 +137,8 @@ private extension MainViewController {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected \(indexPath)")
-        let viewController = SingleImageViewController()
+        let imageURLString = array[indexPath.row].url
+        let viewController = SingleImageViewController(imageURLString: imageURLString)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
