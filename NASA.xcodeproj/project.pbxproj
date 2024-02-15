@@ -164,9 +164,9 @@
 			children = (
 				844BF44E2B76146100C7BCBA /* LaunchScreen.storyboard */,
 				84F80C182B7B818400184309 /* TabBarController.swift */,
-				847A03C62B7E5157002BAE30 /* Fullscreen */,
 				847A03C02B7DF7E6002BAE30 /* Main */,
 				847A03C12B7DF7F5002BAE30 /* Search */,
+				847A03C62B7E5157002BAE30 /* Fullscreen */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
