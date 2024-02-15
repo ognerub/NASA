@@ -13,6 +13,7 @@ final class ImagesListService {
     
     private var currentTask: URLSessionTask?
     private (set) var photos: [Photo] = []
+    private (set) var found: [Photo] = []
     
     init (
         urlSession: URLSession = .shared,
@@ -87,7 +88,7 @@ final class ImagesListService {
                             photos.append(photo)
                         }
                     }
-                    self.photos = photos
+                    self.found = photos
                     NotificationCenter.default.post(
                         name: ImagesListService.SearchResultDidChangeNotification,
                         object: self,

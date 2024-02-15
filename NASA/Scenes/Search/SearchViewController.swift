@@ -53,7 +53,7 @@ class SearchViewController: UIViewController {
             queue: .main
         ) { [weak self] notification in
             guard let self = self else { return }
-            self.nasaArray = self.imagesListService.photos
+            self.nasaArray = self.imagesListService.found
             self.tableView.reloadData()
             self.scrollToFirstRow()
         }
