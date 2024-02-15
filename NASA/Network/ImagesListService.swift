@@ -35,7 +35,7 @@ final class ImagesListService {
                 switch result {
                 case .success(let result):
                     let photos = result
-                    self.photos = photos
+                    self.photos.append(contentsOf: photos)
                     NotificationCenter.default.post(
                         name: ImagesListService.PhotoResultDidChangeNotification,
                         object: self,

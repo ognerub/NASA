@@ -26,9 +26,11 @@ final class SingleImageViewController: UITableViewController {
         return button
     }()
     
-    private let explanation: String
-    
     private var imageURLString: String
+    
+    private let imageTitle: String
+    
+    private let explanation: String
     
     private let tableHeaderView: StretchyTableHeaderView
     
@@ -36,11 +38,13 @@ final class SingleImageViewController: UITableViewController {
     
     init(
         imageURLString: String,
+        imageTitle: String,
         explanation: String,
         tableHeaderView: StretchyTableHeaderView,
         currentCellIndex: IndexPath
     ) {
         self.imageURLString = imageURLString
+        self.imageTitle = imageTitle
         self.explanation = explanation
         self.tableHeaderView =
         SingleImageTableHeaderView(
@@ -126,7 +130,7 @@ extension SingleImageViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SingleImageTableViewCell.cellReuseIdentifier, for: indexPath) as? SingleImageTableViewCell else { return UITableViewCell() }
-        cell.configureCell(text: explanation)
+        cell.configureCell(title: imageTitle,text: explanation)
         return cell
     }
     
