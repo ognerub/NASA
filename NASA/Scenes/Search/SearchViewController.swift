@@ -7,6 +7,7 @@ class SearchViewController: UIViewController {
     private var imagesListServiceObserver: NSObjectProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
+    private var fullScreenTransitionManager: FullScreenTransitionManager?
     
     private lazy var nasaArray: [Photo] = []
     
@@ -27,7 +28,6 @@ class SearchViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let table = UITableView()
-        table.allowsSelection = false
         table.backgroundColor = .clear
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
@@ -135,6 +135,17 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tag = indexPath.row + 1
+        let photo = nasaArray[indexPath.row]
+        let fullScreenTransitionManager = FullScreenTransitionManager(anchorViewTag: tag)
+        let fullScreenImageViewController = FullScreenImageViewController(photo: photo, tag: tag)
+        fullScreenImageViewController.modalPresentationStyle = .custom
+        fullScreenImageViewController.transitioningDelegate = fullScreenTransitionManager
+        present(fullScreenImageViewController, animated: true)
+        self.fullScreenTransitionManager = fullScreenTransitionManager
+    }
 }
 
 extension SearchViewController: UITableViewDataSource {
@@ -151,6 +162,9 @@ extension SearchViewController: UITableViewDataSource {
         )
         downloadImageFor(cell: cell, at: indexPath)
         setupGradientFor(cell: cell)
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.black
+        cell.selectedBackgroundView = backgroundView
         return cell
     }
     
