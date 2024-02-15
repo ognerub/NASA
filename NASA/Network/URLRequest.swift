@@ -71,16 +71,16 @@ final class URLRequestBuilder {
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "YYYY-MM-dd"
-            
             let currentDate: Date = date
+            let equal: Bool = Calendar.current.isDate(Date(), inSameDayAs: currentDate)
             var endDate: Date = currentDate
-            if let substractedEndDate = Calendar.current.date(byAdding: .day, value: -1, to: date) {
+            if let substractedEndDate = Calendar.current.date(byAdding: .day, value: equal ? 0 : -1, to: date) {
                 endDate = substractedEndDate
             }
             let formattedEndDate = dateFormatter.string(from: endDate)
             
-            var startDate: Date = Date()
-            if let substractedStartDate = Calendar.current.date(byAdding: .day, value: -21, to: date) {
+            var startDate: Date = currentDate
+            if let substractedStartDate = Calendar.current.date(byAdding: .day, value: equal ? -20 : -21, to: date) {
                 startDate = substractedStartDate
             }
             let formattedStartDate = dateFormatter.string(from: startDate)

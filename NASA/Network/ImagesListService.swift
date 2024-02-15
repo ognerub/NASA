@@ -22,9 +22,9 @@ final class ImagesListService {
         self.builder = builder
     }
     
-    func fetchPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetchPhotosFrom(date: Date, completion: @escaping (Result<[Photo], Error>) -> Void) {
         if currentTask != nil { return } else { currentTask?.cancel() }
-        guard let request = urlRequestUsing(date: Date()) else {
+        guard let request = urlRequestUsing(date: date) else {
             completion(.failure(NetworkError.urlSessionError))
             return
         }
@@ -35,13 +35,13 @@ final class ImagesListService {
                 switch result {
                 case .success(let result):
                     let photos = result
-                    self.photos.append(contentsOf: photos)
+                    self.photos.append(contentsOf: photos.reversed())
                     NotificationCenter.default.post(
                         name: ImagesListService.PhotoResultDidChangeNotification,
                         object: self,
-                        userInfo: ["Photos": photos]
+                        userInfo: ["Photos": photos.reversed()]
                     )
-                    completion(.success(photos))
+                    completion(.success(photos.reversed()))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -66,7 +66,7 @@ final class ImagesListService {
                     var photos: [Photo] = []
                     let madiaItems = result.collection.items
                     for mediaItem in madiaItems {
-                        var photo = Photo(title: "", url: "")
+                        var photo = Photo(title: "", date: "", url: "")
                         let mediaItem = MediaItem(
                             data: mediaItem.data,
                             links: mediaItem.links

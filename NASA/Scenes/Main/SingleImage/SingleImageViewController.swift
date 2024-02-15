@@ -2,6 +2,12 @@ import UIKit
 import Kingfisher
 final class SingleImageViewController: UITableViewController {
     
+    private lazy var navBar: UINavigationBar = {
+        let bar = UINavigationBar()
+        bar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 80)
+        return bar
+    }()
+    
     private lazy var titleBackgroundView: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor.clear.cgColor
@@ -26,29 +32,21 @@ final class SingleImageViewController: UITableViewController {
         return button
     }()
     
-    private var imageURLString: String
-    
-    private let imageTitle: String
-    
-    private let explanation: String
+    private let photo: Photo
     
     private let tableHeaderView: StretchyTableHeaderView
     
     private let currentCellIndex: IndexPath
     
     init(
-        imageURLString: String,
-        imageTitle: String,
-        explanation: String,
+        photo: Photo,
         tableHeaderView: StretchyTableHeaderView,
         currentCellIndex: IndexPath
     ) {
-        self.imageURLString = imageURLString
-        self.imageTitle = imageTitle
-        self.explanation = explanation
+        self.photo = photo
         self.tableHeaderView =
         SingleImageTableHeaderView(
-            imageURLString: self.imageURLString,
+            imageURLString: self.photo.url,
             frame: CGRect(
                 origin: .zero,
                 size: CGSize(
@@ -68,6 +66,10 @@ final class SingleImageViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         configureConstraints()
     }
     
@@ -80,6 +82,7 @@ final class SingleImageViewController: UITableViewController {
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromLeft
+        navBar.removeFromSuperview()
         navigationController?.view.layer.add(transition, forKey: kCATransition)
         navigationController?.pushViewController(mainViewController, animated: true)
     }
@@ -90,21 +93,20 @@ private extension SingleImageViewController {
     func configureTableView() {
         tableView.register(SingleImageTableViewCell.self, forCellReuseIdentifier: SingleImageTableViewCell.cellReuseIdentifier)
         tableView.tableHeaderView = tableHeaderView
+        tableView.allowsSelection = false
     }
     
     func configureConstraints() {
-        view.addSubview(titleBackgroundView)
-        titleBackgroundView.addSubview(backButton)
+        navigationController?.view.addSubview(navBar)
+        navBar.addSubview(backButton)
         NSLayoutConstraint.activate([
             backButton.heightAnchor.constraint(equalToConstant: 42),
             backButton.widthAnchor.constraint(equalToConstant: 150),
-            backButton.leadingAnchor.constraint(equalTo: titleBackgroundView.leadingAnchor, constant: 10),
-            backButton.bottomAnchor.constraint(equalTo: titleBackgroundView.bottomAnchor)
+            backButton.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 10),
+            backButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor)
         ])
     }
 }
-
-// MARK: UIScrollViewDelegate
 
 extension SingleImageViewController {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -130,7 +132,9 @@ extension SingleImageViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SingleImageTableViewCell.cellReuseIdentifier, for: indexPath) as? SingleImageTableViewCell else { return UITableViewCell() }
-        cell.configureCell(title: imageTitle,text: explanation)
+        cell.configureCell(
+            title: photo.title,
+            text: photo.explanation ?? "")
         return cell
     }
     

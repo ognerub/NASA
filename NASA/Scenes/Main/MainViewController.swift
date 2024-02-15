@@ -12,6 +12,7 @@ final class MainViewController: UIViewController {
     private var array: [Photo] = [
         Photo(
           title : "MOCK - We Are Going",
+          date: "",
           url : "https://images-assets.nasa.gov/video/NHQ_2019_0514_WeAreGoing/NHQ_2019_0514_WeAreGoing~thumb.jpg",
           explanation :
         """
@@ -22,42 +23,52 @@ final class MainViewController: UIViewController {
         ),
         Photo(
           title : "MOCK - We Go Together",
+          date: "",
           url : "https://images-assets.nasa.gov/video/NHQ_2019_0528_We Go Together/NHQ_2019_0528_We Go Together~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - We Go as the Artemis Generation",
+          date: "",
           url : "https://images-assets.nasa.gov/video/NHQ_2019_0719_We Go as the Artemis Generation/NHQ_2019_0719_We Go as the Artemis Generation~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - Going with the Flow",
+          date: "",
           url : "https://images-assets.nasa.gov/image/PIA17850/PIA17850~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - Going with the Flow",
+          date: "",
           url : "https://images-assets.nasa.gov/image/PIA06576/PIA06576~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - What\'s Going on with the Hole in the Ozone Layer",
+          date: "",
           url : "https://images-assets.nasa.gov/video/What\'s Going on with the Hole in the Ozone Layer_ - Horizontal Video/What\'s Going on with the Hole in the Ozone Layer_ - Horizontal Video~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - Merry-Go-Round",
+          date: "",
           url : "https://images-assets.nasa.gov/image/PIA05594/PIA05594~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - Places to Go, Things to See",
+          date: "",
           url : "https://images-assets.nasa.gov/image/PIA11750/PIA11750~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - Way to Go Spirit!",
+          date: "",
           url : "https://images-assets.nasa.gov/image/PIA06686/PIA06686~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - Hey! Whered Everybody Go?",
+          date: "",
           url : "https://images-assets.nasa.gov/image/PIA17988/PIA17988~thumb.jpg",
           explanation : nil),
         Photo(
           title : "MOCK - #AskNASA - Who Is Going With Us?",
+          date: "",
           url : "https://images-assets.nasa.gov/video/NHQ_0219_1014_AskNASA - Who Is Going With Us/NHQ_0219_1014_AskNASA - Who Is Going With Us~thumb.jpg",
           explanation : nil)
     ]
@@ -92,7 +103,6 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .blackColor
         configureCollectionView()
-        
         imagesListServiceObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.PhotoResultDidChangeNotification,
             object: nil,
@@ -101,7 +111,6 @@ final class MainViewController: UIViewController {
             guard let self = self else { return }
             self.array = self.imagesListService.photos
             self.collectionView.reloadData()
-            self.scrollToFirstRow(indexPath: IndexPath(item: 0, section: 0))
         }
     }
     
@@ -110,17 +119,17 @@ final class MainViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         if imagesListService.photos.isEmpty {
-            //startFetch()
+            startFetch()
         } else {
             array = imagesListService.photos
-            scrollToFirstRow(indexPath: currentCellIndex)
+            scrollToRow(indexPath: currentCellIndex)
         }
         
     }
 }
 
 private extension MainViewController {
-    func scrollToFirstRow(indexPath: IndexPath) {
+    func scrollToRow(indexPath: IndexPath) {
         self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
     }
     
@@ -132,8 +141,17 @@ private extension MainViewController {
     }
     
     func startFetch() {
+        let currentDate: Date = Date()
+        var dateToFetch: Date = currentDate
+        if let loadedDate = imagesListService.photos.last?.date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "YYYY-MM-dd"
+            if let loadedDateFormatted = dateFormatter.date(from: loadedDate) {
+                dateToFetch = loadedDateFormatted
+            }
+        }
         uiBlockingProgressHUD?.showCustom()
-        imagesListService.fetchPhotos() { [weak self] result in
+        imagesListService.fetchPhotosFrom(date: dateToFetch) { [weak self] result in
             guard let self = self else { return }
             self.uiBlockingProgressHUD?.dismissCustom()
             switch result {
@@ -164,8 +182,9 @@ private extension MainViewController {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let imageURLString = array[indexPath.row].url
-        let imageTitle = array[indexPath.row].title
+        let url = array[indexPath.row].url
+        let date = array[indexPath.row].date
+        let title = array[indexPath.row].title
         var explanation = ""
         if let string = array[indexPath.row].explanation {
             explanation = string
@@ -175,11 +194,14 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint)
         let viewController =
         SingleImageViewController(
-            imageURLString: imageURLString,
-            imageTitle: imageTitle,
-            explanation: explanation,
+            photo: Photo(
+                title: title,
+                date: date,
+                url: url,
+                explanation: explanation
+            ),
             tableHeaderView: SingleImageTableHeaderView(
-                imageURLString: imageURLString,
+                imageURLString: url,
                 frame: CGRect(
                     origin: .zero,
                     size: CGSize(
@@ -242,7 +264,7 @@ extension MainViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.isLastRow(at: collectionView) {
-            print("load")
+            startFetch()
         }
     }
     
