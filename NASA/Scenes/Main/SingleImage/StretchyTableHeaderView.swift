@@ -1,5 +1,6 @@
 import UIKit
 import TinyConstraints
+
 class StretchyTableHeaderView: UIView {
     internal let contentView: UIView = {
         let view = UIView()

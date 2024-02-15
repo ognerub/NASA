@@ -8,8 +8,6 @@ class SearchViewController: UIViewController {
     private var alertPresenter: AlertPresenterProtocol?
     private var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
     
-    private let storage = OAuth2TokenStorage.shared
-    
     private lazy var nasaArray: [Photo] = []
     
     private lazy var navigationBar: UINavigationBar = {
@@ -39,12 +37,6 @@ class SearchViewController: UIViewController {
         super.loadView()
         alertPresenter = AlertPresenterImpl(viewController: self)
         uiBlockingProgressHUD = UIBlockingProgressHUD(viewController: self)
-        if storage.token == nil {
-            print("token is nil write")
-            storage.token = NetworkConstants.standart.personalToken
-        } else {
-            print("token not nil")
-        }
     }
     
     override func viewDidLoad() {

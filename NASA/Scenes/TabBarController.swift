@@ -15,7 +15,13 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let mainViewController = UINavigationController(rootViewController:  MainViewController())
+        let mainViewController = UINavigationController(
+            rootViewController:
+                MainViewController(
+                    currentCellIndex:
+                        IndexPath(item: 0, section: 0)
+                )
+            )
         mainViewController.tabBarItem = mainTabBarItem
         
         let searchViewController = SearchViewController()
