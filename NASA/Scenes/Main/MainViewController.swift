@@ -197,7 +197,20 @@ extension MainViewController: UICollectionViewDataSource {
         else { return UICollectionViewCell() }
         cell.configureCell(text: array[indexPath.row].title)
         downloadImageFor(cell: cell, at: indexPath)
+        setupGradientFor(cell: cell)
         return cell
+    }
+    
+    private func setupGradientFor(cell: MainCollectionViewCell) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: 0, y: cell.frame.height-30, width: view.frame.width-20, height: 30)
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor.black.withAlphaComponent(0.75).cgColor]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        cell.cellImageView.layer.addSublayer(gradientLayer)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
