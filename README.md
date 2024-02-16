@@ -10,6 +10,8 @@
 
 Стек: #Swift, #UIKit, #UICollectionView, #UITableView, #API, #URLSession, #URLRequest
 
+[Скринкаст](https://drive.google.com/file/d/1jK5VPQP3fkEm1_dzCn2OmSFKiQei-RMI/view?usp=sharing)
+
 Скриншоты:
 
 <div align="center">
