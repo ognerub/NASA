@@ -67,7 +67,8 @@ extension FullScreenPresentationController {
     override func dismissalTransitionWillBegin() {
         guard let transitionCoordinator = presentingViewController.transitionCoordinator else { return }
 
-        transitionCoordinator.animate(alongsideTransition: { context in
+        transitionCoordinator.animate(alongsideTransition: { [weak self] context in
+            guard let self = self else { return }
             self.backgroundView.effect = nil
             self.closeButtonContainer.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
         })

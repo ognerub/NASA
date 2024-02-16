@@ -9,69 +9,7 @@ final class MainViewController: UIViewController {
     private var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
     private let storage = OAuth2TokenStorage.shared
     
-    private var array: [Photo] = [
-        Photo(
-          title : "MOCK - We Are Going",
-          date: "",
-          url : "https://images-assets.nasa.gov/video/NHQ_2019_0514_WeAreGoing/NHQ_2019_0514_WeAreGoing~thumb.jpg",
-          explanation :
-        """
-        2024-02-15 10:36:31.539031+0300 NASA[13885:236824] Task <7409BAED-7395-42ED-B271-794848771F86>.<1> finished with error [-1001] Error Domain=NSURLErrorDomain Code=-1001 "The request timed out." UserInfo={_kCFStreamErrorCodeKey=-2102, NSUnderlyingError=0x600003f48060 {Error Domain=kCFErrorDomainCFNetwork Code=-1001 "(null)" UserInfo={_kCFStreamErrorCodeKey=-2102, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <7409BAED-7395-42ED-B271-794848771F86>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
-            "LocalDataTask <7409BAED-7395-42ED-B271-794848771F86>.<1>"
-        ), NSLocalizedDescription=The request timed out., NSErrorFailingURLStringKey=https://api.nasa.gov/planetary/apod?api_key=B11a2DqpI8ncaTVRnhOgrvEs0ALEVw11ou1EbSk1&start_date=2024-01-25&end_date=2024-02-14, NSErrorFailingURLKey=https://api.nasa.gov/planetary/apod?api_key=B11a2DqpI8ncaTVRnhOgrvEs0ALEVw11ou1EbSk1&start_date=2024-01-25&end_date=2024-02-14, _kCFStreamErrorDomainKey=4}
-        """
-        ),
-        Photo(
-          title : "MOCK - We Go Together",
-          date: "",
-          url : "https://images-assets.nasa.gov/video/NHQ_2019_0528_We Go Together/NHQ_2019_0528_We Go Together~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - We Go as the Artemis Generation",
-          date: "",
-          url : "https://images-assets.nasa.gov/video/NHQ_2019_0719_We Go as the Artemis Generation/NHQ_2019_0719_We Go as the Artemis Generation~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - Going with the Flow",
-          date: "",
-          url : "https://images-assets.nasa.gov/image/PIA17850/PIA17850~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - Going with the Flow",
-          date: "",
-          url : "https://images-assets.nasa.gov/image/PIA06576/PIA06576~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - What\'s Going on with the Hole in the Ozone Layer",
-          date: "",
-          url : "https://images-assets.nasa.gov/video/What\'s Going on with the Hole in the Ozone Layer_ - Horizontal Video/What\'s Going on with the Hole in the Ozone Layer_ - Horizontal Video~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - Merry-Go-Round",
-          date: "",
-          url : "https://images-assets.nasa.gov/image/PIA05594/PIA05594~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - Places to Go, Things to See",
-          date: "",
-          url : "https://images-assets.nasa.gov/image/PIA11750/PIA11750~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - Way to Go Spirit!",
-          date: "",
-          url : "https://images-assets.nasa.gov/image/PIA06686/PIA06686~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - Hey! Whered Everybody Go?",
-          date: "",
-          url : "https://images-assets.nasa.gov/image/PIA17988/PIA17988~thumb.jpg",
-          explanation : nil),
-        Photo(
-          title : "MOCK - #AskNASA - Who Is Going With Us?",
-          date: "",
-          url : "https://images-assets.nasa.gov/video/NHQ_0219_1014_AskNASA - Who Is Going With Us/NHQ_0219_1014_AskNASA - Who Is Going With Us~thumb.jpg",
-          explanation : nil)
-    ]
+    private var array: [Photo] = []
     
     private lazy var collectionView: UICollectionView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
