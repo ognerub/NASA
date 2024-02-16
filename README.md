@@ -17,7 +17,7 @@
     <img src="Screenshots/02.png?raw=true" width="150px"</img>
     <img src="Screenshots/03.png?raw=true" width="150px"</img>
     <img src="Screenshots/04.png?raw=true" width="150px"</img>
-    <img src="Sreenshots/05.png?raw=true" width="150px"</img>
+    <img src="Screenshots/05.png?raw=true" width="150px"</img>
     <img src="Screenshots/06.png?raw=true" width="150px"</img>
     <img src="Screenshots/07.png?raw=true" width="150px"</img>
     <img src="Screenshots/08.png?raw=true" width="150px"</img>
