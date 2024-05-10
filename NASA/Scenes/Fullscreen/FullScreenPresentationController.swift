@@ -2,6 +2,7 @@ import UIKit
 import TinyConstraints
 
 final class FullScreenPresentationController: UIPresentationController {
+    
     private lazy var closeButtonContainer: UIVisualEffectView = {
         let closeButtonBlurEffectView = UIVisualEffectView(effect: blurEffect)
         let vibrancyEffectView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect))
@@ -28,7 +29,7 @@ final class FullScreenPresentationController: UIPresentationController {
         blurVisualEffectView.effect = nil
         return blurVisualEffectView
     }()
-
+    
     private let blurEffect = UIBlurEffect(style: .systemThinMaterial)
 
     @objc private func close(_ button: UIButton) {

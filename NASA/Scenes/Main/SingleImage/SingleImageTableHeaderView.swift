@@ -43,7 +43,7 @@ final class SingleImageTableHeaderView: StretchyTableHeaderView {
             case .success(_):
                 imageView.contentMode = .scaleAspectFill
             case .failure(_):
-                imageView.image = UIImage(systemName: "nosign") ?? UIImage()
+                imageView.image = UIImage.noImage
             }
             
         }

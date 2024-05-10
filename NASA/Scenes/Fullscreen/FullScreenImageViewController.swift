@@ -1,10 +1,3 @@
-//
-//  FullScreenImageViewController.swift
-//  FullScreenImageTransition
-//
-//  Created by Thomas Asheim Smedmann on 19/12/2021.
-//
-
 import UIKit
 import TinyConstraints
 
@@ -26,7 +19,7 @@ class FullScreenImageViewController: UIViewController {
         return view
     }()
     
-    private let octocatImageView: UIImageView = {
+    private let fullscreenImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.setHugging(.defaultHigh, for: .horizontal)
@@ -34,18 +27,44 @@ class FullScreenImageViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var imageViewLandscapeConstraint = octocatImageView.heightToSuperview(isActive: false, usingSafeArea: true)
-    private lazy var imageViewPortraitConstraint = octocatImageView.widthToSuperview(isActive: false, usingSafeArea: true)
+    private lazy var imageViewLandscapeConstraint = fullscreenImageView.heightToSuperview(isActive: false, usingSafeArea: true)
+    private lazy var imageViewPortraitConstraint = fullscreenImageView.widthToSuperview(isActive: false, usingSafeArea: true)
     
     private let photo: Photo
+    
+    private let blurEffect = UIBlurEffect(style: .systemThinMaterial)
+    
+    private lazy var shareButtonContainer: UIVisualEffectView = {
+        let shareButtonBlurEffectView = UIVisualEffectView(effect: blurEffect)
+        let vibrancyEffectView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect))
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.addTarget(self, action: #selector(shareFullscreenImage), for: .primaryActionTriggered)
+        shareButtonBlurEffectView.contentView.addSubview(vibrancyEffectView)
+        vibrancyEffectView.contentView.addSubview(button)
+        button.edgesToSuperview()
+        vibrancyEffectView.edgesToSuperview()
+        shareButtonBlurEffectView.layer.cornerRadius = 24
+        shareButtonBlurEffectView.clipsToBounds = true
+        shareButtonBlurEffectView.size(CGSize(width: 48, height: 48))
+        return shareButtonBlurEffectView
+    }()
+    
+    @objc private func shareFullscreenImage(_ button: UIButton) {
+        guard let image: UIImage = fullscreenImageView.image else { return }
+        let scaleImageRatio = 700 / image.size.width
+        let item: [Any] = [image.scalePreservingAspectRatio(targetSizeScale: scaleImageRatio)]
+        let ac = UIActivityViewController(activityItems: item, applicationActivities: nil)
+        present(ac, animated: true)
+    }
+
     
     init(photo: Photo, tag: Int) {
         self.photo = photo
         super.init(nibName: nil, bundle: nil)
-        octocatImageView.tag = tag
-        octocatImageView.image = UIImage()
-        downloadImageFor(imageView: octocatImageView)
-        
+        fullscreenImageView.tag = tag
+        fullscreenImageView.image = UIImage()
+        downloadImageFor(imageView: fullscreenImageView)
     }
     
     required init?(coder: NSCoder) {
@@ -96,7 +115,7 @@ class FullScreenImageViewController: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(wrapperView)
-        wrapperView.addSubview(octocatImageView)
+        wrapperView.addSubview(fullscreenImageView)
         
         scrollView.edgesToSuperview()
         
@@ -105,11 +124,15 @@ class FullScreenImageViewController: UIViewController {
         wrapperView.width(to: scrollView.safeAreaLayoutGuide)
         wrapperView.height(to: scrollView.safeAreaLayoutGuide)
         
-        octocatImageView.centerInSuperview()
+        fullscreenImageView.centerInSuperview()
         
         // Constraint UIImageView to fit the aspect ratio of the containing image
-        let aspectRatio = octocatImageView.intrinsicContentSize.height / octocatImageView.intrinsicContentSize.width
-        octocatImageView.heightToWidth(of: octocatImageView, multiplier: aspectRatio)
+        let aspectRatio = fullscreenImageView.intrinsicContentSize.height / fullscreenImageView.intrinsicContentSize.width
+        fullscreenImageView.heightToWidth(of: fullscreenImageView, multiplier: aspectRatio)
+        
+        view.addSubview(shareButtonContainer)
+        shareButtonContainer.bottomToSuperview(offset: -32, usingSafeArea: true)
+        shareButtonContainer.centerXToSuperview(usingSafeArea: true)
     }
     
     private func configureBehaviour() {
@@ -148,7 +171,7 @@ class FullScreenImageViewController: UIViewController {
 
 extension FullScreenImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        octocatImageView
+        fullscreenImageView
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
@@ -157,7 +180,7 @@ extension FullScreenImageViewController: UIScrollViewDelegate {
         let originalContentSize = wrapperView.bounds.size
         let offsetX = max((originalContentSize.width - currentContentSize.width) * 0.5, 0)
         let offsetY = max((originalContentSize.height - currentContentSize.height) * 0.5, 0)
-        octocatImageView.center = CGPoint(x: currentContentSize.width * 0.5 + offsetX,
+        fullscreenImageView.center = CGPoint(x: currentContentSize.width * 0.5 + offsetX,
                                           y: currentContentSize.height * 0.5 + offsetY)
     }
 }

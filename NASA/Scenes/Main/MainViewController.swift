@@ -236,7 +236,8 @@ extension MainViewController: UICollectionViewDataSource {
             case .success(_):
                 cell.cellView.contentMode = .scaleAspectFill
             case .failure(_):
-                cell.cellImageView.image = UIImage(systemName: "nosign") ?? UIImage()
+                cell.cellImageView.image = UIImage.noImage
+                cell.cellImageView.contentMode = .scaleAspectFit
             }
             
         }
