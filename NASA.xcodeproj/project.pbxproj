@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		814161142BEEAD7F008D6F42 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161132BEEAD7F008D6F42 /* File.swift */; };
+		814161142BEEAD7F008D6F42 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161132BEEAD7F008D6F42 /* UIImage+Extensions.swift */; };
 		814161162BEEB1CF008D6F42 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161152BEEB1CF008D6F42 /* MainViewControllerViewModel.swift */; };
 		841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */; };
 		844BF4442B76145F00C7BCBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BF4432B76145F00C7BCBA /* AppDelegate.swift */; };
@@ -47,7 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		814161132BEEAD7F008D6F42 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		814161132BEEAD7F008D6F42 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		814161152BEEB1CF008D6F42 /* MainViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerViewModel.swift; sourceTree = "<group>"; };
 		841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		844BF4402B76145F00C7BCBA /* NASA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NASA.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,7 +159,7 @@
 			children = (
 				846AC77C2B7522C600837F48 /* String+Extensions.swift */,
 				847A03C22B7E0E94002BAE30 /* IndexPath+Extension.swift */,
-				814161132BEEAD7F008D6F42 /* File.swift */,
+				814161132BEEAD7F008D6F42 /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -334,7 +334,7 @@
 				844BF45A2B76158B00C7BCBA /* URLSession.swift in Sources */,
 				846938CA2B7CDF5C00C117A2 /* SingleImageTableHeaderView.swift in Sources */,
 				844BF45E2B76158B00C7BCBA /* TokenStorage.swift in Sources */,
-				814161142BEEAD7F008D6F42 /* File.swift in Sources */,
+				814161142BEEAD7F008D6F42 /* UIImage+Extensions.swift in Sources */,
 				841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */,
 				846AC7922B7643D500837F48 /* AlertPresenterImpl.swift in Sources */,
 				846938C82B7CDA9100C117A2 /* StretchyTableHeaderView.swift in Sources */,
