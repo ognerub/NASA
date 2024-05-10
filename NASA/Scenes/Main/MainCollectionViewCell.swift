@@ -1,5 +1,10 @@
 import UIKit
 
+enum CollectionViewCellSize {
+    case main
+    case standart
+}
+
 final class MainCollectionViewCell: UICollectionViewCell {
     
     static let cellReuseIdentifier = "MainCollectionViewCell"
