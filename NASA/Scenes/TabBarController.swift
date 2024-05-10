@@ -14,12 +14,13 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let mainViewModel = MainViewControllerViewModel()
         let mainViewController = UINavigationController(
             rootViewController:
                 MainViewController(
                     currentCellIndex:
-                        IndexPath(item: 0, section: 0)
+                        IndexPath(item: 0, section: 0),
+                    viewModel: mainViewModel
                 )
             )
         mainViewController.tabBarItem = mainTabBarItem

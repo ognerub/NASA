@@ -33,15 +33,15 @@ final class SingleImageViewController: UITableViewController {
     }()
     
     private let photo: Photo
-    
     private let tableHeaderView: StretchyTableHeaderView
-    
     private let currentCellIndex: IndexPath
+    private let viewModel: MainViewControllerViewModel
     
     init(
         photo: Photo,
         tableHeaderView: StretchyTableHeaderView,
-        currentCellIndex: IndexPath
+        currentCellIndex: IndexPath,
+        viewModel: MainViewControllerViewModel
     ) {
         self.photo = photo
         self.tableHeaderView =
@@ -56,6 +56,7 @@ final class SingleImageViewController: UITableViewController {
             )
         )
         self.currentCellIndex = currentCellIndex
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -76,7 +77,7 @@ final class SingleImageViewController: UITableViewController {
     @objc
     private func backButtonTapped() {
         let cellIndex = currentCellIndex
-        let mainViewController = MainViewController(currentCellIndex: cellIndex)
+        let mainViewController = MainViewController(currentCellIndex: cellIndex, viewModel: viewModel)
         let transition = CATransition()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)

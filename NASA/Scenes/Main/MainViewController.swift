@@ -3,13 +3,13 @@ import Kingfisher
 
 final class MainViewController: UIViewController {
     
+    private let viewModel: MainViewControllerViewModel
+    
     private let imagesListService = ImagesListService.shared
     private var imagesListServiceObserver: NSObjectProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
     private let storage = OAuth2TokenStorage.shared
-    
-    private var array: [Photo] = []
     
     private lazy var collectionView: UICollectionView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
@@ -20,7 +20,8 @@ final class MainViewController: UIViewController {
     
     private let currentCellIndex: IndexPath
     
-    init(currentCellIndex: IndexPath) {
+    init(currentCellIndex: IndexPath, viewModel: MainViewControllerViewModel) {
+        self.viewModel = viewModel
         self.currentCellIndex = currentCellIndex
         super.init(nibName: nil, bundle: nil)
     }
@@ -47,7 +48,7 @@ final class MainViewController: UIViewController {
             queue: .main
         ) { [weak self] notification in
             guard let self = self else { return }
-            self.array = self.imagesListService.photos
+            self.viewModel.photosArray = self.imagesListService.photos
             self.collectionView.reloadData()
         }
     }
@@ -59,7 +60,7 @@ final class MainViewController: UIViewController {
         if imagesListService.photos.isEmpty {
             startFetch()
         } else {
-            array = imagesListService.photos
+            viewModel.photosArray = imagesListService.photos
             scrollToRow(indexPath: currentCellIndex)
         }
         
@@ -120,11 +121,11 @@ private extension MainViewController {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let url = array[indexPath.row].url
-        let date = array[indexPath.row].date
-        let title = array[indexPath.row].title
+        let url = viewModel.photosArray[indexPath.row].url
+        let date = viewModel.photosArray[indexPath.row].date
+        let title = viewModel.photosArray[indexPath.row].title
         var explanation = ""
-        if let string = array[indexPath.row].explanation {
+        if let string = viewModel.photosArray[indexPath.row].explanation {
             explanation = string
         }
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
@@ -148,7 +149,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
                     )
                 )
             ),
-            currentCellIndex: visibleIndexPath ?? indexPath
+            currentCellIndex: visibleIndexPath ?? indexPath,
+            viewModel: viewModel
         )
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -187,7 +189,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        array.count
+        viewModel.photosArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -195,7 +197,7 @@ extension MainViewController: UICollectionViewDataSource {
             withReuseIdentifier: MainCollectionViewCell.cellReuseIdentifier,
             for: indexPath) as? MainCollectionViewCell
         else { return UICollectionViewCell() }
-        cell.configureCell(text: array[indexPath.row].title)
+        cell.configureCell(text: viewModel.photosArray[indexPath.row].title)
         downloadImageFor(cell: cell, at: indexPath)
         setupGradientFor(cell: cell)
         return cell
@@ -220,7 +222,7 @@ extension MainViewController: UICollectionViewDataSource {
     }
     
     private func downloadImageFor(cell: MainCollectionViewCell, at indexPath: IndexPath) {
-        guard let url = self.array[indexPath.row].url.addingPercentEncoding(
+        guard let url = self.viewModel.photosArray[indexPath.row].url.addingPercentEncoding(
             withAllowedCharacters: .urlQueryAllowed)
         else { return }
         let processor = DownsamplingImageProcessor(size: CGSize(width: cell.bounds.width, height: cell.bounds.height))
