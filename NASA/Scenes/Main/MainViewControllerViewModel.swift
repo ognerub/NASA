@@ -20,7 +20,7 @@ final class MainViewControllerViewModel: ObservableObject {
     private let dateFormat: String = "YYYY-MM-dd"
     
     func startFetch() {
-        let currentDate: Date = Date()
+        let currentDate: Date = Date(timeInterval: TimeInterval(-60 * 60 * 24), since: Date())
         var dateToFetch: Date = currentDate
         if let loadedDate = imagesListService.photos.last?.date {
             let dateFormatter = DateFormatter()

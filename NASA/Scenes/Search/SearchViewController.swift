@@ -1,5 +1,6 @@
 import UIKit
 import Kingfisher
+import TinyConstraints
 
 class SearchViewController: UIViewController {
     
@@ -32,6 +33,13 @@ class SearchViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
+    
+    private lazy var infoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Please, input search request"
+        label.textColor = UIColor.white
+        return label
+    }()
 
     override func loadView() {
         super.loadView()
@@ -43,10 +51,11 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .blackColor
         view.addSubview(navigationBar)
+        view.addSubview(infoLabel)
+        infoLabel.centerInSuperview()
         navigationBar.addSubview(searchBar)
         searchBar.delegate = self
         configureTableView()
-        
         imagesListServiceObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.SearchResultDidChangeNotification,
             object: nil,
@@ -55,7 +64,13 @@ class SearchViewController: UIViewController {
             guard let self = self else { return }
             self.nasaArray = self.imagesListService.found
             self.tableView.reloadData()
-            self.scrollToFirstRow()
+            if !nasaArray.isEmpty {
+                self.scrollToFirstRow()
+            } else {
+                view.addSubview(infoLabel)
+                infoLabel.centerInSuperview()
+                self.infoLabel.text = "Nothing found, please change request"
+            }
         }
     }
     
@@ -79,6 +94,7 @@ class SearchViewController: UIViewController {
     
     private func startFetchUsing(searchText: String?) {
         guard let searchText = searchText else { return }
+        infoLabel.removeFromSuperview()
         uiBlockingProgressHUD?.showCustom()
         imagesListService.fetchPhotosUsing(searchText: searchText) { [weak self] result in
             guard let self = self else { return }
@@ -161,7 +177,6 @@ extension SearchViewController: UITableViewDataSource {
             textLabel: nasaArray[indexPath.row].title
         )
         downloadImageFor(cell: cell, at: indexPath)
-        setupGradientFor(cell: cell)
         let backgroundView = UIView()
         backgroundView.backgroundColor = UIColor.black
         cell.selectedBackgroundView = backgroundView
@@ -190,18 +205,6 @@ extension SearchViewController: UITableViewDataSource {
             }
             
         }
-    }
-    
-    private func setupGradientFor(cell: SearchTableViewCell) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = CGRect(x: 0, y: 160, width: view.frame.width-20, height: 30)
-        gradientLayer.colors = [
-            UIColor.clear.cgColor,
-            UIColor.black.withAlphaComponent(0.75).cgColor]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        cell.cellImageView.layer.addSublayer(gradientLayer)
     }
 }
 
