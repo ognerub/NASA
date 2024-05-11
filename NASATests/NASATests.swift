@@ -1,10 +1,3 @@
-//
-//  NASATests.swift
-//  NASATests
-//
-//  Created by Alexander Ognerubov on 11.05.2024.
-//
-
 @testable import NASA
 import XCTest
 

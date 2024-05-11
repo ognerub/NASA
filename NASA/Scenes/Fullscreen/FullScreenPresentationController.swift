@@ -10,7 +10,7 @@ final class FullScreenPresentationController: UIPresentationController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.addTarget(self, action: #selector(close), for: .primaryActionTriggered)
-
+        button.accessibilityIdentifier = "CloseButton"
         closeButtonBlurEffectView.contentView.addSubview(vibrancyEffectView)
         vibrancyEffectView.contentView.addSubview(button)
 

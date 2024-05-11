@@ -1,6 +1,7 @@
 import UIKit
 import Kingfisher
 
+// MARK: - MainViewControllerViewModelProtocol
 protocol MainViewControllerViewModelProtocol {
     var storage: OAuth2TokenStorageProtocol { get set }
     var imagesListService: ImagesListServiceProtocol { get }
@@ -14,6 +15,7 @@ protocol MainViewControllerViewModelProtocol {
     func sizeOfCollectionViewCell(screeWidth: CGFloat) -> CGSize
 }
 
+// MARK: - MainViewControllerViewModel
 final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
     
     // MARK: Properties
@@ -127,6 +129,7 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
     }
 }
 
+// MARK: - MainViewControllerViewModelSpy
 final class MainViewControllerViewModelSpy: MainViewControllerViewModelProtocol {
     
     var storage: any OAuth2TokenStorageProtocol
