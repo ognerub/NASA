@@ -3,7 +3,7 @@ import UIKit
 final class MainViewController: UIViewController {
     
     // MARK: Properties
-    private let viewModel: MainViewControllerViewModel
+    private var viewModel: MainViewControllerViewModelProtocol
     private var fullScreenTransitionManager: FullScreenTransitionManager?
     
     private lazy var collectionView: UICollectionView = {
@@ -14,7 +14,7 @@ final class MainViewController: UIViewController {
     }()
     
     // MARK: Init
-    init(viewModel: MainViewControllerViewModel) {
+    init(viewModel: MainViewControllerViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

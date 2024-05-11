@@ -1,18 +1,21 @@
 import Foundation
 
-final class ImagesListService {
-    
-    static let shared = ImagesListService()
+protocol ImagesListServiceProtocol: AnyObject {
+    var photos: [Photo] { get set }
+    func fetchPhotosFrom(date: Date, completion: @escaping (Result<[Photo], Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     
     private let urlSession: URLSession
-    private let builder: URLRequestBuilder
+    private let builder: URLRequestBuilderProtocol
     
     private var currentTask: URLSessionTask?
-    private (set) var photos: [Photo] = []
+    var photos: [Photo] = []
     
     init (
         urlSession: URLSession = .shared,
-        builder: URLRequestBuilder = .shared
+        builder: URLRequestBuilderProtocol
     ) {
         self.urlSession = urlSession
         self.builder = builder

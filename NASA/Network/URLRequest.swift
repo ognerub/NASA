@@ -1,11 +1,19 @@
 import Foundation
 
-final class URLRequestBuilder {
-    static let shared = URLRequestBuilder()
+protocol URLRequestBuilderProtocol {
+    func makeHTTPRequest(
+        path: String,
+        httpMethod: String,
+        baseURLString: String,
+        date: Date
+    ) -> URLRequest?
+}
+
+final class URLRequestBuilder: URLRequestBuilderProtocol {
     
-    private let storage: OAuth2TokenStorage
+    private let storage: OAuth2TokenStorageProtocol
     
-    init(storage: OAuth2TokenStorage = .shared) {
+    init(storage: OAuth2TokenStorageProtocol) {
         self.storage = storage
     }
     

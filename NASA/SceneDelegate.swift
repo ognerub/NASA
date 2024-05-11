@@ -6,7 +6,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        let mainViewModel = MainViewControllerViewModel()
+        let storage = OAuth2TokenStorage()
+        let imagesListService = ImagesListService(builder: URLRequestBuilder(storage: storage))
+        let mainViewModel = MainViewControllerViewModel(storage: storage, imagesListService: imagesListService)
         let navigationController = UINavigationController(rootViewController: MainViewController(viewModel: mainViewModel))
         window.rootViewController = navigationController
         window.overrideUserInterfaceStyle = .dark

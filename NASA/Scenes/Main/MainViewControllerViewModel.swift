@@ -1,21 +1,42 @@
 import UIKit
 import Kingfisher
 
-final class MainViewControllerViewModel {
+protocol MainViewControllerViewModelProtocol {
+    var storage: OAuth2TokenStorageProtocol { get set }
+    var imagesListService: ImagesListServiceProtocol { get }
+    var alertPresenter: AlertPresenterProtocol? { get set }
+    var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol? { get set }
+    var photosArrayBinding: Binding<[Photo]>? { get set }
+    var photosArray: [Photo] { get set }
+    func endlessPhotosLoading(isFirstLoad: Bool)
+    func startFetchPhotos()
+    func downloadImageFor(cell: MainCollectionViewCell, at indexPath: IndexPath)
+    func sizeOfCollectionViewCell(screeWidth: CGFloat) -> CGSize
+}
+
+final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
     
     // MARK: Properties
-    let imagesListService = ImagesListService.shared
-    let storage = OAuth2TokenStorage.shared
+    var storage: OAuth2TokenStorageProtocol
+    var imagesListService: ImagesListServiceProtocol
     var alertPresenter: AlertPresenterProtocol?
     var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
-    var imagesListServiceObserver: NSObjectProtocol?
     var photosArrayBinding: Binding<[Photo]>?
-    private(set) var photosArray: [Photo] = [] {
+    var photosArray: [Photo] = [] {
         didSet {
             photosArrayBinding?(photosArray)
         }
     }
     private let dateFormat: String = NSLocalizedString("mainViewControllerViewModel.dateFormat", comment: "")
+    
+    // MARK: Init
+    init(
+        storage: OAuth2TokenStorageProtocol,
+        imagesListService: ImagesListServiceProtocol
+    ) {
+        self.storage = storage
+        self.imagesListService = imagesListService
+    }
     
     // MARK: Functions
     func endlessPhotosLoading(isFirstLoad: Bool) {
@@ -105,3 +126,44 @@ final class MainViewControllerViewModel {
         }
     }
 }
+
+final class MainViewControllerViewModelSpy: MainViewControllerViewModelProtocol {
+    
+    var storage: any OAuth2TokenStorageProtocol
+    var imagesListService: any ImagesListServiceProtocol
+    var alertPresenter: (any AlertPresenterProtocol)?
+    var uiBlockingProgressHUD: (any UIBlockingProgressHUDProtocol)?
+    var photosArrayBinding: Binding<[Photo]>?
+    var photosArray: [Photo] = []
+    var isFirstLoadStarted: Bool = false
+    var isFetchPhotosStarted: Bool = false
+    
+    init(
+        storage: any OAuth2TokenStorageProtocol,
+        imagesListService: any ImagesListServiceProtocol
+    ) {
+        self.storage = storage
+        self.imagesListService = imagesListService
+    }
+    
+    func endlessPhotosLoading(isFirstLoad: Bool) {
+        if isFirstLoad {
+            self.isFirstLoadStarted = true
+        } else {
+            self.isFirstLoadStarted = false
+        }
+    }
+    
+    func startFetchPhotos() {
+        isFetchPhotosStarted = true
+    }
+    
+    func downloadImageFor(cell: MainCollectionViewCell, at indexPath: IndexPath) {
+        
+    }
+    
+    func sizeOfCollectionViewCell(screeWidth: CGFloat) -> CGSize {
+        return CGSize(width: 100, height: 150)
+    }
+}
+

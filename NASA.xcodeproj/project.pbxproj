@@ -11,6 +11,7 @@
 		814161162BEEB1CF008D6F42 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161152BEEB1CF008D6F42 /* MainViewControllerViewModel.swift */; };
 		814161192BEF5A43008D6F42 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 814161172BEF5A43008D6F42 /* Localizable.strings */; };
 		8141611D2BEF6471008D6F42 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141611C2BEF6471008D6F42 /* Binding.swift */; };
+		814161252BEF7360008D6F42 /* NASATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161242BEF7360008D6F42 /* NASATests.swift */; };
 		841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */; };
 		844BF4442B76145F00C7BCBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BF4432B76145F00C7BCBA /* AppDelegate.swift */; };
 		844BF44D2B76146100C7BCBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844BF44C2B76146100C7BCBA /* Assets.xcassets */; };
@@ -40,6 +41,16 @@
 		84F80C1B2B7B826A00184309 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F80C1A2B7B826A00184309 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		814161262BEF7360008D6F42 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 844BF4382B76145F00C7BCBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 844BF43F2B76145F00C7BCBA;
+			remoteInfo = NASA;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		814161132BEEAD7F008D6F42 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		814161152BEEB1CF008D6F42 /* MainViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerViewModel.swift; sourceTree = "<group>"; };
@@ -47,6 +58,8 @@
 		8141611A2BEF5B2E008D6F42 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		8141611B2BEF5B2F008D6F42 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8141611C2BEF6471008D6F42 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
+		814161222BEF7360008D6F42 /* NASATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NASATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		814161242BEF7360008D6F42 /* NASATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASATests.swift; sourceTree = "<group>"; };
 		841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		844BF4402B76145F00C7BCBA /* NASA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NASA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844BF4432B76145F00C7BCBA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +89,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8141611F2BEF7360008D6F42 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		844BF43D2B76145F00C7BCBA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -89,10 +109,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		814161232BEF7360008D6F42 /* NASATests */ = {
+			isa = PBXGroup;
+			children = (
+				814161242BEF7360008D6F42 /* NASATests.swift */,
+			);
+			path = NASATests;
+			sourceTree = "<group>";
+		};
 		844BF4372B76145F00C7BCBA = {
 			isa = PBXGroup;
 			children = (
 				844BF4422B76145F00C7BCBA /* NASA */,
+				814161232BEF7360008D6F42 /* NASATests */,
 				844BF4412B76145F00C7BCBA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				844BF4402B76145F00C7BCBA /* NASA.app */,
+				814161222BEF7360008D6F42 /* NASATests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,6 +246,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		814161212BEF7360008D6F42 /* NASATests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 814161282BEF7360008D6F42 /* Build configuration list for PBXNativeTarget "NASATests" */;
+			buildPhases = (
+				8141611E2BEF7360008D6F42 /* Sources */,
+				8141611F2BEF7360008D6F42 /* Frameworks */,
+				814161202BEF7360008D6F42 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				814161272BEF7360008D6F42 /* PBXTargetDependency */,
+			);
+			name = NASATests;
+			productName = NASATests;
+			productReference = 814161222BEF7360008D6F42 /* NASATests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		844BF43F2B76145F00C7BCBA /* NASA */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 844BF4542B76146100C7BCBA /* Build configuration list for PBXNativeTarget "NASA" */;
@@ -245,9 +293,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					814161212BEF7360008D6F42 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 844BF43F2B76145F00C7BCBA;
+					};
 					844BF43F2B76145F00C7BCBA = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -273,11 +325,19 @@
 			projectRoot = "";
 			targets = (
 				844BF43F2B76145F00C7BCBA /* NASA */,
+				814161212BEF7360008D6F42 /* NASATests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		814161202BEF7360008D6F42 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		844BF43E2B76145F00C7BCBA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -291,6 +351,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8141611E2BEF7360008D6F42 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				814161252BEF7360008D6F42 /* NASATests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		844BF43C2B76145F00C7BCBA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -325,6 +393,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		814161272BEF7360008D6F42 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 844BF43F2B76145F00C7BCBA /* NASA */;
+			targetProxy = 814161262BEF7360008D6F42 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		814161172BEF5A43008D6F42 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -347,6 +423,53 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		814161292BEF7360008D6F42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q9BL3YJ6S3;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = alexander.ognerubov.NASATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NASA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NASA";
+			};
+			name = Debug;
+		};
+		8141612A2BEF7360008D6F42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q9BL3YJ6S3;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = alexander.ognerubov.NASATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NASA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NASA";
+			};
+			name = Release;
+		};
 		844BF4522B76146100C7BCBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -473,6 +596,7 @@
 				DEVELOPMENT_TEAM = Q9BL3YJ6S3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NASA/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs access your photo library to save selected images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -483,11 +607,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.ognerub.NASAtest;
+				PRODUCT_BUNDLE_IDENTIFIER = alexander.ognerubov.NASAtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -504,6 +629,7 @@
 				DEVELOPMENT_TEAM = Q9BL3YJ6S3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NASA/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs access your photo library to save selected images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -514,11 +640,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.ognerub.NASAtest;
+				PRODUCT_BUNDLE_IDENTIFIER = alexander.ognerubov.NASAtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -528,6 +655,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		814161282BEF7360008D6F42 /* Build configuration list for PBXNativeTarget "NASATests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				814161292BEF7360008D6F42 /* Debug */,
+				8141612A2BEF7360008D6F42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		844BF43B2B76145F00C7BCBA /* Build configuration list for PBXProject "NASA" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
