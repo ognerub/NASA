@@ -1,0 +1,4 @@
+"showNetWorkError.AlertModel.title" = "Network error";
+"showNetWorkError.AlertModel.message" = "Try again?";
+"showNetWorkError.AlertModel.firstButton" = "Yes";
+"showNetWorkError.AlertModel.secondButton" = "No";

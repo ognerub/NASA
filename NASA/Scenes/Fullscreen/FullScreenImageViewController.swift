@@ -58,12 +58,25 @@ class FullScreenImageViewController: UIViewController {
         present(ac, animated: true)
     }
 
+    private lazy var fullscreenImageLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.backgroundColor = .clear
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        label.numberOfLines = 5
+        label.lineBreakMode = .byWordWrapping
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     init(photo: Photo, tag: Int) {
         self.photo = photo
         super.init(nibName: nil, bundle: nil)
         fullscreenImageView.tag = tag
         fullscreenImageView.image = UIImage()
+        fullscreenImageLabel.text = photo.title
         downloadImageFor(imageView: fullscreenImageView)
     }
     
@@ -103,7 +116,7 @@ class FullScreenImageViewController: UIViewController {
             case .success(_):
                 imageView.contentMode = .scaleAspectFill
             case .failure(_):
-                imageView.image = UIImage(systemName: "nosign") ?? UIImage()
+                imageView.image = UIImage.noImage
             }
             
         }
@@ -133,6 +146,10 @@ class FullScreenImageViewController: UIViewController {
         view.addSubview(shareButtonContainer)
         shareButtonContainer.bottomToSuperview(offset: -32, usingSafeArea: true)
         shareButtonContainer.centerXToSuperview(usingSafeArea: true)
+        
+        view.addSubview(fullscreenImageLabel)
+        fullscreenImageLabel.topToSuperview(offset: 70, usingSafeArea: true)
+        fullscreenImageLabel.centerXToSuperview(usingSafeArea: true)
     }
     
     private func configureBehaviour() {

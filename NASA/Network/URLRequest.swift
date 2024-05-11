@@ -30,31 +30,6 @@ final class URLRequestBuilder {
         return (request, baseURL)
     }
     
-    func makeSearchHTTPRequest (
-        path: String,
-        httpMethod: String,
-        baseURLString: String, searchText: String?) -> URLRequest? {
-            let simpleRequest = makeBaseRequestAndURL(
-                path: path,
-                httpMethod: httpMethod,
-                baseURLString: baseURLString)
-            var request: URLRequest = simpleRequest.0
-            let baseURL: URL = simpleRequest.1
-            
-            guard let searchText = searchText else { return nil }
-            let search = "\(searchText)"
-            var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-            components?.queryItems = [
-                URLQueryItem(name: "q", value: "\(search)")
-            ]
-            guard let comurl = components?.url else {
-                print("error to create url")
-                return nil
-            }
-            request.url = comurl
-            return request
-        }
-    
     func makeHTTPRequest(
         path: String,
         httpMethod: String,

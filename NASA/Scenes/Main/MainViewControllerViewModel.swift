@@ -1,15 +1,9 @@
-//
-//  MainViewControllerViewModel.swift
-//  NASA
-//
-//  Created by Alexander Ognerubov on 10.05.2024.
-//
-
 import UIKit
 import Kingfisher
 
 final class MainViewControllerViewModel: ObservableObject {
     
+    // MARK: Properties
     var photosArray: [Photo] = []
     var alertPresenter: AlertPresenterProtocol?
     var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
@@ -19,8 +13,10 @@ final class MainViewControllerViewModel: ObservableObject {
     
     private let dateFormat: String = "YYYY-MM-dd"
     
+    // MARK: Functions
     func startFetch() {
-        let currentDate: Date = Date(timeInterval: TimeInterval(-60 * 60 * 24), since: Date())
+        let oneDayBackTimeInterval = TimeInterval(-60 * 60 * 24)
+        let currentDate: Date = Date(timeInterval: oneDayBackTimeInterval, since: Date())
         var dateToFetch: Date = currentDate
         if let loadedDate = imagesListService.photos.last?.date {
             let dateFormatter = DateFormatter()
@@ -59,7 +55,7 @@ final class MainViewControllerViewModel: ObservableObject {
         ) { result in
             switch result {
             case .success(_):
-                cell.cellView.contentMode = .scaleAspectFill
+                cell.cellImageView.contentMode = .scaleAspectFill
             case .failure(_):
                 cell.cellImageView.image = UIImage.noImage
                 cell.cellImageView.contentMode = .scaleAspectFit
@@ -67,64 +63,26 @@ final class MainViewControllerViewModel: ObservableObject {
         }
     }
     
-    func getSingleImageViewController(from indexPath: IndexPath, and visibleIndexPath: IndexPath?) -> UITableViewController {
-        let url = photosArray[indexPath.row].url
-        let date = photosArray[indexPath.row].date
-        let title = photosArray[indexPath.row].title
-        var explanation = ""
-        if let string = photosArray[indexPath.row].explanation {
-            explanation = string
-        }
-        return SingleImageViewController(
-            photo: Photo(
-                title: title,
-                date: date,
-                url: url,
-                explanation: explanation
-            ),
-            tableHeaderView: SingleImageTableHeaderView(
-                imageURLString: url,
-                frame: CGRect(
-                    origin: .zero,
-                    size: CGSize(
-                        width: .zero,
-                        height: SingleImageTableHeaderView.baseHeight
-                    )
-                )
-            ),
-            currentCellIndex: visibleIndexPath ?? indexPath,
-            viewModel: self
-        )
-    }
-    
-    func sizeOfCollectionViewCell(with type: CollectionViewCellSize, screeWidth: CGFloat) -> CGSize {
+    func sizeOfCollectionViewCell(screeWidth: CGFloat) -> CGSize {
         let screenWidth: CGFloat = screeWidth
-        let insets: CGFloat = 10
-        let cellWidthWithInsets: CGFloat = screenWidth - (insets * 2)
-        let cellHeight: CGFloat = 180
-        switch type {
-        case .main:
-            return CGSize(
-                width: cellWidthWithInsets,
-                height: cellHeight + 20)
-        case .standart:
-            let spacing: CGFloat = 5
-            let cellsInRow: CGFloat = 2
-            let cellWidthComputed = cellWidthWithInsets / cellsInRow - spacing
-            
-            return CGSize(
-                width: cellWidthComputed,
-                height: cellHeight)
-        }
+        let insets: CGFloat = MainCollectionViewCellConstants.insets
+        let cellsInRow: CGFloat = MainCollectionViewCellConstants.cellsInRow
+        let cellWidthWithInsets: CGFloat = screenWidth - (insets * cellsInRow)
+        let cellHeight: CGFloat = MainCollectionViewCellConstants.cellHeight
+        let spacing: CGFloat = MainCollectionViewCellConstants.spacing
+        let cellWidthComputed = cellWidthWithInsets / cellsInRow - spacing
+        return CGSize(
+            width: cellWidthComputed,
+            height: cellHeight)
     }
     
     func showNetWorkErrorForImagesListVC(completion: @escaping () -> Void) {
         DispatchQueue.main.async {
             let model = AlertModel(
-                title: "Что-то пошло не так(",
-                message: "Попробовать еще раз?",
-                firstButton: "Повторить",
-                secondButton: "Не надо",
+                title: NSLocalizedString("showNetWorkError.AlertModel.title", comment: ""),
+                message: NSLocalizedString("showNetWorkError.AlertModel.message", comment: ""),
+                firstButton: NSLocalizedString("showNetWorkError.AlertModel.firstButton", comment: ""),
+                secondButton: NSLocalizedString("showNetWorkError.AlertModel.secondButton", comment: ""),
                 firstCompletion: completion,
                 secondCompletion: {})
             self.alertPresenter?.show(with: model)

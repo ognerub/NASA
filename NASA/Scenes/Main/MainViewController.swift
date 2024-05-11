@@ -1,10 +1,10 @@
 import UIKit
 
-// MARK: - MainViewController
 final class MainViewController: UIViewController {
     
     // MARK: Properties
     private let viewModel: MainViewControllerViewModel
+    private var fullScreenTransitionManager: FullScreenTransitionManager?
     private let currentCellIndex: IndexPath
     
     private lazy var collectionView: UICollectionView = {
@@ -80,20 +80,19 @@ private extension MainViewController {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
-        let visiblePoint = CGPoint(x: visibleRect.minX + 15, y: visibleRect.minY + 15)
-        let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint)
-        let viewControllerToPush = viewModel.getSingleImageViewController(from: indexPath, and: visibleIndexPath)
-        navigationController?.pushViewController(viewControllerToPush, animated: true)
+        let tag = indexPath.row + 1
+        let photo = viewModel.photosArray[indexPath.row]
+        let fullScreenTransitionManager = FullScreenTransitionManager(anchorViewTag: tag)
+        let fullScreenImageViewController = FullScreenImageViewController(photo: photo, tag: tag)
+        fullScreenImageViewController.modalPresentationStyle = .custom
+        fullScreenImageViewController.transitioningDelegate = fullScreenTransitionManager
+        present(fullScreenImageViewController, animated: true)
+        self.fullScreenTransitionManager = fullScreenTransitionManager
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let screenWidth = view.frame.width
-        if indexPath.row == 0 {
-            return viewModel.sizeOfCollectionViewCell(with: .main, screeWidth: screenWidth)
-        } else {
-            return viewModel.sizeOfCollectionViewCell(with: .standart, screeWidth: screenWidth)
-        }
+        return viewModel.sizeOfCollectionViewCell(screeWidth: screenWidth)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -116,7 +115,6 @@ extension MainViewController: UICollectionViewDataSource {
             withReuseIdentifier: MainCollectionViewCell.cellReuseIdentifier,
             for: indexPath) as? MainCollectionViewCell
         else { return UICollectionViewCell() }
-        cell.configureCell(text: viewModel.photosArray[indexPath.row].title)
         viewModel.downloadImageFor(cell: cell, at: indexPath)
         return cell
     }

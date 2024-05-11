@@ -1,26 +1,15 @@
 import UIKit
 
-enum CollectionViewCellSize {
-    case main
-    case standart
+enum MainCollectionViewCellConstants {
+    static let cellHeight: CGFloat = 150
+    static let cellsInRow: CGFloat = 3
+    static let spacing: CGFloat = 5
+    static let insets: CGFloat = 10
 }
 
 final class MainCollectionViewCell: UICollectionViewCell {
     
     static let cellReuseIdentifier = "MainCollectionViewCell"
-    
-    private lazy var cellLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.backgroundColor = .clear
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        label.numberOfLines = 2
-        label.lineBreakMode = .byWordWrapping
-        label.adjustsFontSizeToFitWidth = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
     lazy var cellView: UIView = {
         let view = UIView()
@@ -52,10 +41,6 @@ final class MainCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(text: String) {
-        self.cellLabel.text = text
-    }
-    
     private func configureConstraints() {
         contentView.addSubview(cellView)
         NSLayoutConstraint.activate([
@@ -70,12 +55,6 @@ final class MainCollectionViewCell: UICollectionViewCell {
             cellImageView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
             cellImageView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
             cellImageView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor)
-        ])
-        cellView.addSubview(cellLabel)
-        NSLayoutConstraint.activate([
-            cellLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10),
-            cellLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10),
-            cellLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -10)
         ])
     }
     

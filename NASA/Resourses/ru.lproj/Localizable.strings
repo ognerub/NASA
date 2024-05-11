@@ -1,0 +1,4 @@
+"showNetWorkError.AlertModel.title" = "Что-то пошло не так(";
+"showNetWorkError.AlertModel.message" = "Попробовать еще раз?";
+"showNetWorkError.AlertModel.firstButton" = "Повторить";
+"showNetWorkError.AlertModel.secondButton" = "Не надо";

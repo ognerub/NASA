@@ -6,8 +6,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        let viewController = TabBarController()
-        window.rootViewController = viewController
+        let mainViewModel = MainViewControllerViewModel()
+        let mainViewController = UINavigationController(
+            rootViewController:
+                MainViewController(
+                    currentCellIndex:
+                        IndexPath(item: 0, section: 0),
+                    viewModel: mainViewModel
+                )
+            )
+        window.rootViewController = mainViewController
         window.overrideUserInterfaceStyle = .dark
         self.window = window
         window.makeKeyAndVisible()
