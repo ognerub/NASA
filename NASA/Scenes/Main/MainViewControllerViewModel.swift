@@ -4,30 +4,29 @@ import Kingfisher
 final class MainViewControllerViewModel {
     
     // MARK: Properties
+    let imagesListService = ImagesListService.shared
+    let storage = OAuth2TokenStorage.shared
+    var alertPresenter: AlertPresenterProtocol?
+    var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
+    var imagesListServiceObserver: NSObjectProtocol?
+    var photosArrayBinding: Binding<[Photo]>?
     private(set) var photosArray: [Photo] = [] {
         didSet {
             photosArrayBinding?(photosArray)
         }
     }
-    var photosArrayBinding: Binding<[Photo]>?
-    var alertPresenter: AlertPresenterProtocol?
-    var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
-    var imagesListServiceObserver: NSObjectProtocol?
-    let imagesListService = ImagesListService.shared
-    let storage = OAuth2TokenStorage.shared
-    
-    private let dateFormat: String = "YYYY-MM-dd"
+    private let dateFormat: String = NSLocalizedString("mainViewControllerViewModel.dateFormat", comment: "")
     
     // MARK: Functions
-    func updatePhotosArray(withScroll: Bool) {
-        if withScroll {
-            startFetch()
+    func endlessPhotosLoading(isFirstLoad: Bool) {
+        if isFirstLoad {
+            startFetchPhotos()
         } else {
             photosArray = imagesListService.photos
         }
     }
     
-    func startFetch() {
+    func startFetchPhotos() {
         let oneDayBackTimeInterval = TimeInterval(-60 * 60 * 24)
         let currentDate: Date = Date(timeInterval: oneDayBackTimeInterval, since: Date())
         var dateToFetch: Date = currentDate
@@ -50,8 +49,8 @@ final class MainViewControllerViewModel {
                     photosArray.append(contentsOf: photos)
                 }
             case .failure:
-                self.showNetWorkErrorForImagesListVC() {
-                    self.startFetch()
+                self.showNetworkError() {
+                    self.startFetchPhotos()
                 }
             }
         }
@@ -93,13 +92,13 @@ final class MainViewControllerViewModel {
             height: cellHeight)
     }
     
-    func showNetWorkErrorForImagesListVC(completion: @escaping () -> Void) {
+    func showNetworkError(completion: @escaping () -> Void) {
         DispatchQueue.main.async {
             let model = AlertModel(
-                title: NSLocalizedString("showNetWorkError.AlertModel.title", comment: ""),
-                message: NSLocalizedString("showNetWorkError.AlertModel.message", comment: ""),
-                firstButton: NSLocalizedString("showNetWorkError.AlertModel.firstButton", comment: ""),
-                secondButton: NSLocalizedString("showNetWorkError.AlertModel.secondButton", comment: ""),
+                title: NSLocalizedString("showNetworkError.AlertModel.title", comment: ""),
+                message: NSLocalizedString("showNetworkError.AlertModel.message", comment: ""),
+                firstButton: NSLocalizedString("showNetworkError.AlertModel.firstButton", comment: ""),
+                secondButton: NSLocalizedString("showNetworkError.AlertModel.secondButton", comment: ""),
                 firstCompletion: completion,
                 secondCompletion: {})
             self.alertPresenter?.show(with: model)

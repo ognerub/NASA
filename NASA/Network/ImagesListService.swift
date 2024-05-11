@@ -2,10 +2,6 @@ import Foundation
 
 final class ImagesListService {
     
-    static let SearchResultDidChangeNotification = Notification.Name(rawValue: "SearchResultDidChange")
-    
-    static let PhotoResultDidChangeNotification = Notification.Name(rawValue: "PhotoResultDidChange")
-    
     static let shared = ImagesListService()
     
     private let urlSession: URLSession
@@ -13,7 +9,6 @@ final class ImagesListService {
     
     private var currentTask: URLSessionTask?
     private (set) var photos: [Photo] = []
-    private (set) var found: [Photo] = []
     
     init (
         urlSession: URLSession = .shared,
@@ -37,11 +32,6 @@ final class ImagesListService {
                 case .success(let result):
                     let photos = result
                     self.photos.append(contentsOf: photos.reversed())
-                    NotificationCenter.default.post(
-                        name: ImagesListService.PhotoResultDidChangeNotification,
-                        object: self,
-                        userInfo: ["Photos": photos.reversed()]
-                    )
                     completion(.success(photos.reversed()))
                 case .failure(let error):
                     completion(.failure(error))

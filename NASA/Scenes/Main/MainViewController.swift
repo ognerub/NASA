@@ -45,8 +45,8 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        let isPhotosEmpty = viewModel.imagesListService.photos.isEmpty
-        viewModel.updatePhotosArray(withScroll: isPhotosEmpty)
+        let isCurrentPhotosEmpty = viewModel.imagesListService.photos.isEmpty
+        viewModel.endlessPhotosLoading(isFirstLoad: isCurrentPhotosEmpty)
     }
 }
 
@@ -109,7 +109,7 @@ extension MainViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.isLastRow(at: collectionView) {
-            viewModel.startFetch()
+            viewModel.startFetchPhotos()
         }
     }
 }

@@ -1,4 +1,6 @@
-"showNetWorkError.AlertModel.title" = "Network error";
-"showNetWorkError.AlertModel.message" = "Try again?";
-"showNetWorkError.AlertModel.firstButton" = "Yes";
-"showNetWorkError.AlertModel.secondButton" = "No";
+"showNetworkError.AlertModel.title" = "Network error";
+"showNetworkError.AlertModel.message" = "Try again?";
+"showNetworkError.AlertModel.firstButton" = "Yes";
+"showNetworkError.AlertModel.secondButton" = "No";
+
+"mainViewControllerViewModel.dateFormat" = "YYYY-MM-dd";

@@ -2,3 +2,5 @@
 "showNetWorkError.AlertModel.message" = "Попробовать еще раз?";
 "showNetWorkError.AlertModel.firstButton" = "Повторить";
 "showNetWorkError.AlertModel.secondButton" = "Не надо";
+
+"mainViewControllerViewModel.dateFormat" = "YYYY-MM-dd";
