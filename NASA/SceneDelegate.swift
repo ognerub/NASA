@@ -7,15 +7,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         let mainViewModel = MainViewControllerViewModel()
-        let mainViewController = UINavigationController(
-            rootViewController:
-                MainViewController(
-                    currentCellIndex:
-                        IndexPath(item: 0, section: 0),
-                    viewModel: mainViewModel
-                )
-            )
-        window.rootViewController = mainViewController
+        let navigationController = UINavigationController(rootViewController: MainViewController(viewModel: mainViewModel))
+        window.rootViewController = navigationController
         window.overrideUserInterfaceStyle = .dark
         self.window = window
         window.makeKeyAndVisible()

@@ -10,6 +10,7 @@
 		814161142BEEAD7F008D6F42 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161132BEEAD7F008D6F42 /* UIImage+Extensions.swift */; };
 		814161162BEEB1CF008D6F42 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814161152BEEB1CF008D6F42 /* MainViewControllerViewModel.swift */; };
 		814161192BEF5A43008D6F42 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 814161172BEF5A43008D6F42 /* Localizable.strings */; };
+		8141611D2BEF6471008D6F42 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141611C2BEF6471008D6F42 /* Binding.swift */; };
 		841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */; };
 		844BF4442B76145F00C7BCBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844BF4432B76145F00C7BCBA /* AppDelegate.swift */; };
 		844BF44D2B76146100C7BCBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844BF44C2B76146100C7BCBA /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		814161182BEF5A43008D6F42 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8141611A2BEF5B2E008D6F42 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		8141611B2BEF5B2F008D6F42 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8141611C2BEF6471008D6F42 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		841095CA2B7BE05000D96F39 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		844BF4402B76145F00C7BCBA /* NASA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NASA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844BF4432B76145F00C7BCBA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				846AC77C2B7522C600837F48 /* String+Extensions.swift */,
 				847A03C22B7E0E94002BAE30 /* IndexPath+Extension.swift */,
 				814161132BEEAD7F008D6F42 /* UIImage+Extensions.swift */,
+				8141611C2BEF6471008D6F42 /* Binding.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				844BF45E2B76158B00C7BCBA /* TokenStorage.swift in Sources */,
 				814161142BEEAD7F008D6F42 /* UIImage+Extensions.swift in Sources */,
 				841095CB2B7BE05000D96F39 /* MainCollectionViewCell.swift in Sources */,
+				8141611D2BEF6471008D6F42 /* Binding.swift in Sources */,
 				846AC7922B7643D500837F48 /* AlertPresenterImpl.swift in Sources */,
 				847A03C32B7E0E94002BAE30 /* IndexPath+Extension.swift in Sources */,
 				846AC77D2B7522C600837F48 /* String+Extensions.swift in Sources */,

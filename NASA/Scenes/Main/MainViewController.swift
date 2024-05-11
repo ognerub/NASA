@@ -5,7 +5,6 @@ final class MainViewController: UIViewController {
     // MARK: Properties
     private let viewModel: MainViewControllerViewModel
     private var fullScreenTransitionManager: FullScreenTransitionManager?
-    private let currentCellIndex: IndexPath
     
     private lazy var collectionView: UICollectionView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
@@ -15,9 +14,8 @@ final class MainViewController: UIViewController {
     }()
     
     // MARK: Init
-    init(currentCellIndex: IndexPath, viewModel: MainViewControllerViewModel) {
+    init(viewModel: MainViewControllerViewModel) {
         self.viewModel = viewModel
-        self.currentCellIndex = currentCellIndex
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,13 +36,8 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .blackColor
         configureCollectionView()
-        viewModel.imagesListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.PhotoResultDidChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
+        viewModel.photosArrayBinding = { [weak self] _ in
             guard let self = self else { return }
-            self.viewModel.photosArray = self.viewModel.imagesListService.photos
             self.collectionView.reloadData()
         }
     }
@@ -52,13 +45,8 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        if viewModel.imagesListService.photos.isEmpty {
-            viewModel.startFetch()
-        } else {
-            viewModel.photosArray = viewModel.imagesListService.photos
-            scrollToRow(indexPath: currentCellIndex)
-        }
-        
+        let isPhotosEmpty = viewModel.imagesListService.photos.isEmpty
+        viewModel.updatePhotosArray(withScroll: isPhotosEmpty)
     }
 }
 

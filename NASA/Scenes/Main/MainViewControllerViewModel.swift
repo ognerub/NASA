@@ -1,10 +1,15 @@
 import UIKit
 import Kingfisher
 
-final class MainViewControllerViewModel: ObservableObject {
+final class MainViewControllerViewModel {
     
     // MARK: Properties
-    var photosArray: [Photo] = []
+    private(set) var photosArray: [Photo] = [] {
+        didSet {
+            photosArrayBinding?(photosArray)
+        }
+    }
+    var photosArrayBinding: Binding<[Photo]>?
     var alertPresenter: AlertPresenterProtocol?
     var uiBlockingProgressHUD: UIBlockingProgressHUDProtocol?
     var imagesListServiceObserver: NSObjectProtocol?
@@ -14,6 +19,14 @@ final class MainViewControllerViewModel: ObservableObject {
     private let dateFormat: String = "YYYY-MM-dd"
     
     // MARK: Functions
+    func updatePhotosArray(withScroll: Bool) {
+        if withScroll {
+            startFetch()
+        } else {
+            photosArray = imagesListService.photos
+        }
+    }
+    
     func startFetch() {
         let oneDayBackTimeInterval = TimeInterval(-60 * 60 * 24)
         let currentDate: Date = Date(timeInterval: oneDayBackTimeInterval, since: Date())
@@ -30,8 +43,12 @@ final class MainViewControllerViewModel: ObservableObject {
             guard let self = self else { return }
             self.uiBlockingProgressHUD?.dismissCustom()
             switch result {
-            case .success:
-                return
+            case .success(let photos):
+                if photosArray.isEmpty {
+                    photosArray = photos
+                } else {
+                    photosArray.append(contentsOf: photos)
+                }
             case .failure:
                 self.showNetWorkErrorForImagesListVC() {
                     self.startFetch()
